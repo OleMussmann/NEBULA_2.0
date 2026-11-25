@@ -33,7 +33,8 @@ nix develop          # or open in a devcontainer / Codespace
 make study           # generate decks and study views next to each slides.md
 make quarto          # build the Quarto variant into quarto/_site
 make hugo            # build the Hugo variant into hugo/public (+ Pagefind)
-nix develop .#verify --command make verify-quarto   # browser checks (or verify-hugo)
+make starlight       # build the Starlight variant into starlight/dist
+nix develop .#verify --command make verify-quarto   # browser checks (or verify-hugo, verify-starlight)
 make content REF=…   # re-import content from upstream (default: main)
 make clean
 ```

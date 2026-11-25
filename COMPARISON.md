@@ -41,7 +41,7 @@ Findings that apply to every generator:
 
 ### Findings
 
-- **All acceptance checks pass** locally under the sub-path (32/32),
+- **All acceptance checks pass** locally under the sub-path (32/32; 34/34 with the image checks added in step 4),
   except the CI/Pages and web-editor PR preview items (step 5).
 - **Custom code:** `quarto/prepare.py` 276 lines (pre-render),
   `_quarto.yml` 49, `styles.css` 16, `poc.qmd` 24 (PoC page with the
@@ -122,7 +122,7 @@ Quarto's HTML pass treats overlapping sections.
 
 ### Findings
 
-- **All acceptance checks pass** locally under the sub-path (32/32),
+- **All acceptance checks pass** locally under the sub-path (32/32; 34/34 with the image checks added in step 4),
   except the CI/Pages and web-editor PR preview items (step 5). No
   duplicate ids.
 - **Custom code:** 211 lines of Go templates (`layouts/` 185 + content
@@ -203,6 +203,91 @@ version in CI and expect small template/config edits on upgrades.
 - Several content repos: one mount set per repo; edit links would need the
   repo per page (a param from the mount is not available; untested).
 
-## Astro Starlight
+## Astro Starlight (Starlight 0.43.1, Astro 7.4.13)
 
-Not built yet (step 4).
+### Findings
+
+- **All acceptance checks pass** locally under the sub-path (34/34, incl.
+  the slide-image checks added in this step), except the CI/Pages and
+  web-editor PR preview items (step 5). No duplicate ids.
+- **Custom code:** content loader `nebula-loader.ts` 154 lines, content
+  reader `nebula.mjs` 65, `content.config.ts` 38 (schema),
+  `astro.config.mjs` 59 (sidebar from content), hub `index.astro` 39,
+  `Footer.astro` 20, `site.css` 41, `prepare.py` 53, `poc.md` 23. About
+  490 lines, TypeScript/JS for the most part.
+- **Toolchain:** Node 22 + npm (288 packages, lockfile committed) + Python 3
+  (decks). Pagefind is built in.
+- **Clean build:** 4.8 s for `make clean && make starlight`, of which
+  ~3 s is `npm ci`; the Astro build itself ~1.1 s for 23 pages.
+- **Frontmatter validation (the win):** the collection schema extends
+  Starlight's with NEBULA's fields; module `index.md` files are also
+  checked by a stricter schema. A typo fails the build with file and field:
+  ```
+  docs → modules/softwarelandscape/exercise2 data does not match collection schema.
+    type: Invalid option: expected one of "info"|"reading"|"exercise"|"slides"
+  ```
+  ```
+  …/modules/softwarelandscape/index.md: invalid module frontmatter
+  ✖ Invalid input: expected number, received string
+    → at order
+  ```
+- **Frontmatter mapping** happens in the content loader (content is read
+  in place): `editUrl` per page pointing at `content/`; exercise body
+  wrapped in a `:::tip[Exercise]` aside; module page gets the abstract and
+  a table of its pages; `slides` pages render their study view; NEBULA
+  root-absolute links rewritten.
+- **Sidebar:** one group per category in `categoryOrder`, a collapsible
+  group per visible module, pages in `order` with the type as a badge;
+  built in `astro.config.mjs` from the content (see "awkward").
+- **Edit this page:** built in; set per page by the loader.
+- **Search:** built in (Pagefind runs as part of `astro build`).
+- **Images:** Markdown images (`![](media/x.png)`) are resolved and
+  optimised to WebP by Astro; raw `<img>` and decks use the copied
+  `public/modules/<m>/media/`.
+
+### What was awkward
+
+- **Starlight assumes files under `src/content/docs/`** in several places
+  that a custom loader bypasses:
+  - sidebar `autogenerate` matches pages by file path below that folder,
+    so it finds none; the sidebar is built in the config instead, and the
+    planned `order` → `sidebar.order` mapping is not needed;
+  - asides and heading anchor links only run there until
+    `markdown.processedDirs: ['../content']` is set;
+  - Markdown images stay as `__ASTRO_IMAGE_` placeholders unless the
+    loader passes `assetImports`, as Astro's own glob loader does
+    (undocumented for custom loaders; found by reading Astro's source).
+- **The sidebar is read at config time**, so in `astro dev` a new page
+  appears in the sidebar only after a restart (builds are unaffected).
+- **Version churn:** Starlight 0.39 removed `autogenerate` groups with a
+  label (the error message says exactly what to change). Starlight is
+  pre-1.0; minor versions can break config.
+- Heading ids in study views collide with slide ids, as in the other
+  variants; the loader suffixes heading ids, their anchor links and the
+  TOC entries.
+- `build.format: 'file'` keeps `info.html` next to `media/`; links are
+  written with `.html` so they work on any static host.
+- Harmless build warnings: no `i18n` collection, no `404` entry.
+
+### How a non-coder adds an exercise
+
+Same as Quarto and Hugo: add `content/modules/<module>/<name>.md` with
+`title`, `type: exercise`, `order` in the GitHub web editor and open a PR.
+The loader and sidebar pick it up. Difference: a frontmatter mistake fails
+the PR build with a readable message instead of producing a wrong page.
+
+### Upgrade risk
+
+The loader uses Astro's public content-loader API (`parseData`,
+`renderMarkdown`, `store.set`), but relies on `assetImports`, which is
+not documented for custom loaders. Starlight is 0.x and has broken config
+between minors; the sidebar and `processedDirs` settings are the exposed
+parts. Pin exact versions (done) and let Renovate/Dependabot propose
+updates through PR previews.
+
+### Open issues
+
+- Sidebar needs a dev-server restart for new pages (see above).
+- Several content repos: the loader takes a list of sources with their
+  own `editBase`, which fits; the sidebar and hub already iterate over
+  modules, but only one source is wired (untested with two).

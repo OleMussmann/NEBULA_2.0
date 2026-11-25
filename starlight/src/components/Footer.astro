@@ -1,0 +1,20 @@
+---
+// Starlight's footer (edit link, prev/next) plus the content credit.
+import Default from '@astrojs/starlight/components/Footer.astro';
+---
+
+<Default><slot /></Default>
+<p class="content-credit">
+	Lesson content © Netherlands eScience Center,
+	<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (images: see credits);
+	source: <a href="https://github.com/esciencecenter-digital-skills/research-software-support">research-software-support</a>.
+	Astro Starlight variant of the <a href="https://github.com/OleMussmann/NEBULA_2.0">NEBULA successor PoC</a>.
+</p>
+
+<style>
+	.content-credit {
+		margin-top: 2rem;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+	}
+</style>

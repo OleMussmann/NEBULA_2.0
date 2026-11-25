@@ -49,6 +49,11 @@ def pagefind_search(page: Page, term: str) -> int:
     return page.locator(".pagefind-ui__result").count()
 
 
+def starlight_search(page: Page, term: str) -> int:
+    page.locator("button[data-open-modal]").first.click()
+    return pagefind_search(page, term)
+
+
 VARIANTS = {
     "quarto": dict(
         module="modules/{m}/",                 # module page
@@ -63,6 +68,13 @@ VARIANTS = {
         main="main/{stem}.html",
         example_link_page="poc.html",
         search=pagefind_search,
+    ),
+    "starlight": dict(
+        module="modules/{m}.html",
+        page="modules/{m}/{stem}.html",
+        main="main/{stem}.html",
+        example_link_page="poc.html",
+        search=starlight_search,
     ),
 }
 
@@ -193,6 +205,19 @@ def main() -> int:
             deck_ready(page)
             r.check("present-from-here opens deck at that slide",
                     page.evaluate("Reveal.getCurrentSlide().id") == "about-copyright")
+
+            for mod in visible:
+                sp = next((p for p in mod.pages if p.type == "slides"), None)
+                if sp is None:
+                    continue
+                page.goto(base + v["page"].format(m=mod.slug, stem=sp.stem))
+                page.evaluate("document.querySelectorAll('img').forEach(i => i.loading = 'eager')")
+                page.wait_for_function("[...document.images].every(i => i.complete)", timeout=20_000)
+                bad = page.evaluate("[...document.querySelectorAll('.study-slide img')]"
+                                    ".filter(i => !i.naturalWidth).map(i => i.getAttribute('src'))")
+                total = page.locator(".study-slide img").count()
+                r.check(f"study view {mod.slug}: all {total} slide images load", not bad,
+                        ", ".join(bad[:3]))
 
             # 5. deck: theme, slide count, hash, notes
             deck_url = base + v["page"].format(m="licenses", stem=slides.stem).replace(".html", ".deck.html")
