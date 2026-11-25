@@ -85,6 +85,14 @@ Findings that apply to every generator:
     colour), and fragments the author semi-fades on purpose.
   Whether reveal.js's scroll view (rendered slides as a scrolling page)
   works with `escience_theme` is untested.
+- **CI and previews (step 5):** one workflow builds all three variants
+  with Nix, runs the browser checks and deploys to GitHub Pages
+  (`gh-pages` branch); a second one publishes every PR under
+  `/NEBULA_2.0/pr-preview/pr-<n>/` with a link comment and removes it when
+  the PR closes. Tested end to end: deploy, PR preview from a web-editor
+  edit, removal on close. Fork PRs get no preview (read-only token);
+  web-editor edits by people with write access create a branch, not a
+  fork. Pages needs `.nojekyll`, or Jekyll drops Astro's `_astro/`.
 - **Serving path (CI previews):** PR previews live one level deeper than
   the site (`/NEBULA_2.0/pr-preview/pr-<n>/<variant>/`), so the base path
   is a build parameter (`SITE_PATH`). Quarto's output is fully relative and
@@ -97,8 +105,9 @@ Findings that apply to every generator:
 
 ### Findings
 
-- **All acceptance checks pass** locally under the sub-path (32/32; 34/34 with the image checks added in step 4;
-  44/44 with the module page bar checks; 61/61 with gen-ai and the dark-mode, overlap and scheme-switch checks), except the CI/Pages and web-editor PR preview items (step 5).
+- **All acceptance criteria met:** 67/67 browser checks (`verify_site.py`)
+  locally, under the PR-preview path and in CI; deployed to GitHub Pages;
+  a typo fix in the GitHub web editor got a PR preview (step 5).
 - **Custom code:** `quarto/prepare.py` 251 lines (pre-render),
   `_quarto.yml` 50, `styles.css` 16, `poc.qmd` 24 (PoC page with the
   example slide link). No templates, no Lua filters, no EJS.
@@ -177,9 +186,9 @@ Quarto's HTML pass treats overlapping sections.
 
 ### Findings
 
-- **All acceptance checks pass** locally under the sub-path (32/32; 34/34 with the image checks added in step 4;
-  44/44 with the module page bar checks; 61/61 with gen-ai and the dark-mode, overlap and scheme-switch checks), except the CI/Pages and web-editor PR preview items (step 5). No
-  duplicate ids.
+- **All acceptance criteria met:** 67/67 browser checks (`verify_site.py`)
+  locally, under the PR-preview path and in CI; deployed to GitHub Pages;
+  a typo fix in the GitHub web editor got a PR preview (step 5). No duplicate ids.
 - **Custom code:** 228 lines of Go templates (`layouts/` 195 + content
   adapter 33), `hugo.toml` 75 (mostly commented mounts), `site.css` 117,
   `poc.md` 25. No pre-build script of its own: only the shared
@@ -274,11 +283,9 @@ version in CI and expect small template/config edits on upgrades.
 
 ### Findings
 
-- **All acceptance checks pass** locally under the sub-path (34/34, incl.
-  the slide-image checks added in this step; 44/44 with the module page
-  bar checks; 61/61 with gen-ai and the dark-mode, overlap and
-  scheme-switch checks), except the CI/Pages and
-  web-editor PR preview items (step 5). No duplicate ids.
+- **All acceptance criteria met:** 67/67 browser checks (`verify_site.py`)
+  locally, under the PR-preview path and in CI; deployed to GitHub Pages;
+  a typo fix in the GitHub web editor got a PR preview (step 5). No duplicate ids.
 - **Custom code:** content loader `nebula-loader.ts` 177 lines, content
   reader `nebula.mjs` 65, `content.config.ts` 38 (schema),
   `astro.config.mjs` 56 (sidebar from content), hub `index.astro` 39,
