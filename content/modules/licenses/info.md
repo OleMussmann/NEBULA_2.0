@@ -10,4 +10,4 @@ In this module you will learn to answer the following questions:
 - How to legally use software made by others in your organisation?
 - How to license software created by your organisation?
 - How to license contributions to external Open Source projects?
-
+- NEW LINE
