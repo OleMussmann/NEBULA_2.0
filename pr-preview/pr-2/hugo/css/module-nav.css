@@ -1,0 +1,65 @@
+/* Module page bar: the module title and its pages in `order`, one tab per
+ * page with a page-type icon (shared/icons/<type>.svg). Shown at the top of
+ * every page of a module, as NEBULA's chapter bar is.
+ * Shared by all three variants; each one includes this file as-is.
+ */
+
+.module-nav {
+  margin: 0 0 1.5rem;
+}
+
+.module-nav-title {
+  font-weight: 600;
+  opacity: 0.75;
+  margin-bottom: 0.4rem;
+}
+
+.module-nav-pages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.module-nav-pages li {
+  margin: 0;
+}
+
+.module-nav a.module-nav-page {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem 0.35rem 0.4rem;
+  border: 1px solid rgba(127, 127, 127, 0.35);
+  border-radius: 6px;
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+.module-nav a.module-nav-page:hover {
+  border-color: #009ddd;
+}
+
+.module-nav a.module-nav-page[aria-current="page"] {
+  border-color: #009ddd;
+  background: rgba(0, 157, 221, 0.12);
+  font-weight: 600;
+}
+
+.module-nav-icon {
+  display: inline-flex;
+  padding: 0.2rem;
+  border-radius: 4px;
+  background: #ffb213;
+  color: #380339;
+}
+
+.module-nav-icon svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}

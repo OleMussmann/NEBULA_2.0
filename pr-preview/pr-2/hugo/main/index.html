@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    
+    
+    (() => {
+      let t = "auto";
+      try { t = localStorage.getItem("theme") || "auto"; } catch (e) {}
+      if (t !== "auto") document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <title>Mains · Research Software Support</title>
+  <link rel="stylesheet" href="/NEBULA_2.0/pr-preview/pr-2/hugo/css/site.css">
+  <link rel="stylesheet" href="/NEBULA_2.0/pr-preview/pr-2/hugo/css/study.css">
+  <link rel="stylesheet" href="/NEBULA_2.0/pr-preview/pr-2/hugo/css/module-nav.css">
+  <link rel="stylesheet" href="/NEBULA_2.0/pr-preview/pr-2/hugo/pagefind/pagefind-ui.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/NEBULA_2.0/pr-preview/pr-2/hugo/">Research Software Support</a>
+    <nav>
+      <a href="/NEBULA_2.0/pr-preview/pr-2/hugo/">Lessons</a>
+      
+        
+          <a href="/NEBULA_2.0/pr-preview/pr-2/hugo/main/about.html">About</a>
+        
+          <a href="/NEBULA_2.0/pr-preview/pr-2/hugo/main/yellowpages.html">Yellow Pages</a>
+        
+          <a href="/NEBULA_2.0/pr-preview/pr-2/hugo/main/contribute.html">Contribute</a>
+        
+          <a href="/NEBULA_2.0/pr-preview/pr-2/hugo/main/workshops.html">Workshops</a>
+        
+      
+      <a href="/NEBULA_2.0/pr-preview/pr-2/hugo/poc.html">About this PoC</a>
+    </nav>
+    <div id="search" class="search"></div>
+    <button type="button" class="theme-toggle" id="theme-toggle" title="Colour scheme">Auto</button>
+  </header>
+
+  <main class="page" data-pagefind-body>
+    
+
+
+<header class="page-header">
+  <h1>Mains</h1>
+  <div class="page-meta">
+    
+    
+
+
+  
+
+
+
+  </div>
+</header>
+
+
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Lesson content © Netherlands eScience Center,
+      <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (images: see credits);
+      source: <a href="https://github.com/esciencecenter-digital-skills/research-software-support">research-software-support</a>.</p>
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+    <p class="credits">Thumbnails: The Research Software Landscape: Photo by <a href="https://unsplash.com/@kalenemsley?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Kalen Emsley</a> on <a href="https://unsplash.com/photos/green-mountain-across-body-of-water-Bkci_8qcdvQ?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a> · Generative AI: <a href="https://www.flickr.com/photos/arthur-caranta/3061094186/">Photo</a> by <a href="https://www.flickr.com/photos/arthur-caranta/">Arthur Caranta</a> under <a href="https://creativecommons.org/licenses/by-sa/2.0/deed.en">CC BY-SA 2.0</a>, cropped. · Software Licenses: 
+
+<a href="https://unsplash.com/photos/laptop-compute-displaying-command-prompt-vII7qKAk-9A?utm_content=creditShareLink&amp;utm_medium=referral&amp;utm_source=unsplash">thumbnail-licenses</a> Photo by <a href="https://unsplash.com/@disruptxn?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Desola Lanre-Ologun</a> on <a href="https://unsplash.com/photos/laptop-compute-displaying-command-prompt-vII7qKAk-9A?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></p>
+    <p>Hugo variant of the <a href="https://github.com/OleMussmann/NEBULA_2.0">NEBULA successor PoC</a>.</p>
+  </footer>
+
+  <script src="/NEBULA_2.0/pr-preview/pr-2/hugo/pagefind/pagefind-ui.js"></script>
+  <script>
+    (() => {
+      const btn = document.getElementById("theme-toggle");
+      const order = ["auto", "light", "dark"];
+      const label = { auto: "Auto", light: "Light", dark: "Dark" };
+      let t = document.documentElement.dataset.theme || "auto";
+      btn.textContent = label[t];
+      btn.addEventListener("click", () => {
+        t = order[(order.indexOf(t) + 1) % order.length];
+        if (t === "auto") delete document.documentElement.dataset.theme;
+        else document.documentElement.dataset.theme = t;
+        try { localStorage.setItem("theme", t); } catch (e) {}
+        btn.textContent = label[t];
+      });
+    })();
+    window.addEventListener("DOMContentLoaded", () => {
+      if (window.PagefindUI) new PagefindUI({ element: "#search", showSubResults: true, showImages: false });
+    });
+  </script>
+</body>
+</html>

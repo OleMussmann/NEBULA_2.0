@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    
+    
+    (() => {
+      let t = "auto";
+      try { t = localStorage.getItem("theme") || "auto"; } catch (e) {}
+      if (t !== "auto") document.documentElement.dataset.theme = t;
+    })();
+  </script>
+  <title>Mapping FAIR principles · Research Software Support</title>
+  <link rel="stylesheet" href="/NEBULA_2.0/pr-preview/pr-2/hugo/css/site.css">
+  <link rel="stylesheet" href="/NEBULA_2.0/pr-preview/pr-2/hugo/css/study.css">
+  <link rel="stylesheet" href="/NEBULA_2.0/pr-preview/pr-2/hugo/css/module-nav.css">
+  <link rel="stylesheet" href="/NEBULA_2.0/pr-preview/pr-2/hugo/pagefind/pagefind-ui.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/NEBULA_2.0/pr-preview/pr-2/hugo/">Research Software Support</a>
+    <nav>
+      <a href="/NEBULA_2.0/pr-preview/pr-2/hugo/">Lessons</a>
+      
+        
+          <a href="/NEBULA_2.0/pr-preview/pr-2/hugo/main/about.html">About</a>
+        
+          <a href="/NEBULA_2.0/pr-preview/pr-2/hugo/main/yellowpages.html">Yellow Pages</a>
+        
+          <a href="/NEBULA_2.0/pr-preview/pr-2/hugo/main/contribute.html">Contribute</a>
+        
+          <a href="/NEBULA_2.0/pr-preview/pr-2/hugo/main/workshops.html">Workshops</a>
+        
+      
+      <a href="/NEBULA_2.0/pr-preview/pr-2/hugo/poc.html">About this PoC</a>
+    </nav>
+    <div id="search" class="search"></div>
+    <button type="button" class="theme-toggle" id="theme-toggle" title="Colour scheme">Auto</button>
+  </header>
+
+  <main class="page" data-pagefind-body>
+    
+
+<header class="page-header">
+  <h1>Mapping FAIR principles</h1>
+  <div class="page-meta">
+    
+      <span class="badge badge-exercise">exercise</span>
+    
+    
+
+
+  
+
+
+  <a class="edit-link" href="https://github.com/OleMussmann/NEBULA_2.0/edit/main/content/modules/softwarelandscape/exercise2.md">Edit this page</a>
+
+
+  </div>
+</header>
+
+
+
+
+<nav class="module-nav" aria-label="Pages in this module">
+  <div class="module-nav-title">The Research Software Landscape</div>
+  <ul class="module-nav-pages">
+  
+    <li><a class="module-nav-page" href="/NEBULA_2.0/pr-preview/pr-2/hugo/modules/softwarelandscape/info.html"><span class="module-nav-icon" title="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><path d="M12 7.5h.01"/></svg>
+</span><span>Learning objectives</span></a></li>
+  
+    <li><a class="module-nav-page" href="/NEBULA_2.0/pr-preview/pr-2/hugo/modules/softwarelandscape/slides.html"><span class="module-nav-icon" title="slides"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M12 16v3"/><path d="M8 21l4-2 4 2"/></svg>
+</span><span>Landscape</span></a></li>
+  
+    <li><a class="module-nav-page" href="/NEBULA_2.0/pr-preview/pr-2/hugo/modules/softwarelandscape/exercise1.html"><span class="module-nav-icon" title="exercise"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>
+</span><span>Study &amp; present</span></a></li>
+  
+    <li><a class="module-nav-page" href="/NEBULA_2.0/pr-preview/pr-2/hugo/modules/softwarelandscape/exercise2.html" aria-current="page"><span class="module-nav-icon" title="exercise"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>
+</span><span>Mapping FAIR principles</span></a></li>
+  
+    <li><a class="module-nav-page" href="/NEBULA_2.0/pr-preview/pr-2/hugo/modules/softwarelandscape/exercise3.html"><span class="module-nav-icon" title="exercise"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>
+</span><span>Role playing</span></a></li>
+  
+    <li><a class="module-nav-page" href="/NEBULA_2.0/pr-preview/pr-2/hugo/modules/softwarelandscape/reading.html"><span class="module-nav-icon" title="reading"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5C5.5 4.5 9 4.5 12 6.5c3-2 6.5-2 9-1V19c-2.5-1-6-1-9 1-3-2-6.5-2-9-1z"/><path d="M12 6.5V20"/></svg>
+</span><span>Further reading</span></a></li>
+  
+  </ul>
+</nav>
+
+
+<div class="callout callout-exercise">
+  <div class="callout-title">Exercise</div>
+  
+
+<h2 id="exercise-mapping-the-fair-principles"><strong>Exercise:</strong> Mapping the FAIR principles</h2>
+<p>Choose one of the three examples of software below: 
+
+<a href="#software-1-comet">Comet</a>, 
+
+<a href="#software-2-puregome">PureGoMe</a>, or 
+
+<a href="#software-3-gammashiny">gammaShiny</a>. They have been described with statements that can be mapped to the FAIR4RS Principles. With each statement in the software description, identify the principle(s) it maps to, and the (sub)facet(s) of the principle(s) it addresses. A single statement may map to multiple (sub)facets.</p>
+<table style="text-align: left;">
+<tr><th style="padding: 0.5em 1em;"><b>The FAIR4RS Principles</b> (<a href="https://zenodo.org/records/6623556">zenodo.org/records/6623556</a>)</th></tr>
+<tr><td style="padding: 0.5em 1em;"><b>F: Software, and its associated metadata, is easy for both humans and machines to find.</b></td></tr>
+<tr><td style="padding: 0.5em 1em;">F1. Software is assigned a globally unique and persistent identifier. <br> — F1.1. Components of the software representing levels of granularity are assigned distinct identifiers. <br> — F1.2. Different versions of the software are assigned distinct identifiers. <br> F2. Software is described with rich metadata. <br> F3. Metadata clearly and explicitly include the identifier of the software they describe. <br> F4. Metadata are FAIR, searchable and indexable.</td></tr>
+<tr><td style="padding: 0.5em 1em;"><b>A: Software, and its metadata, is retrievable via standardized protocols.</b></td></tr>
+<tr><td style="padding: 0.5em 1em;">A1. Software is retrievable by its identifier using a standardized communications protocol. <br> — A1.1. The protocol is open, free, and universally implementable. <br> — A1.2. The protocol allows for an authentication and authorization procedure, where necessary. <br> A2. Metadata are accessible, even when the software is no longer available.</td></tr>
+<tr><td style="padding: 0.5em 1em;"><b>I: Software interoperates with other software by exchanging data and/or metadata, and/or through interaction via  application programming interfaces (APIs), described through standards.</b></td></tr>
+<tr><td style="padding: 0.5em 1em;">I1. Software reads, writes and exchanges data in a way that meets domain-relevant community standards. <br> I2. Software includes qualified references to other objects.</td></tr>
+<tr><td style="padding: 0.5em 1em;"><b>R: Software is both usable (can be executed) and reusable (can be understood, modified, built upon, or incorporated into other software).</b></td></tr>
+<tr><td style="padding: 0.5em 1em;">R1. Software is described with a plurality of accurate and relevant attributes. <br> — R1.1. Software is given a clear and accessible license. <br> — R1.2. Software is associated with detailed provenance. <br> R2. Software includes qualified references to other software. <br> R3. Software meets domain-relevant community standards.</td></tr>
+</table>
+
+
+<h3 id="software-1-comet">Software 1: Comet</h3>
+<center><img src="media/comet-logo.png" alt="Comet software logo" width="300"/></center>
+<p>
+
+<a href="https://doi.org/10.1002/pmic.201200439">Comet</a> is a command-line tool and desktop application for tandem mass spectrometry sequence database search6.</p>
+<ul>
+<li>Comet is licensed under the Apache 2.0 open source licence.</li>
+<li>Comet is registered in the bio.tools catalogue of bioinformatics tools, where it has a globally unique and persistent identifier, and rich metadata that includes the identifier and is searchable and indexable.</li>
+<li>The metadata in bio.tools is independent from the Comet repository, and will stay accessible should the software itself become inaccessible.</li>
+<li>The publicly accessible project repository on GitHub includes detailed information about the development of Comet.</li>
+<li>The code includes dependencies to external software packages, such as Thermo Scientific’s MSFileReader library.</li>
+<li>Comet can be downloaded via the browser following the links provided in the metadata using https.</li>
+<li>Comet uses standard data types from the proteomics domain for its input and output data that are documented in the metadata as functional annotations.</li>
+</ul>
+
+
+<h3 id="software-2-puregome">Software 2: PureGoMe</h3>
+<center><img src="media/puregome-logo.png" alt="puregome software logo" width="300"/></center>
+<p>
+
+<a href="https://doi.org/10.5281/zenodo.4337242">PureGoMe</a> is a project aimed at understanding Dutch public sentiment during the COVID-19 outbreak period by analysing real-time Twitter data. It provides a collection of Python scripts and Jupyter notebooks for this purpose.</p>
+<ul>
+<li>PureGoMe can be downloaded from the project repository, while metadata is accessible independently from the registry.</li>
+<li>PuReGoMe&rsquo;s GitHub repository has detailed records of the development history.</li>
+<li>The code includes dependencies to other software, such as various Python libraries.</li>
+<li>PuReGoMe has a (versioned) DOI from Zenodo.</li>
+<li>PuReGoMe uses the Apache 2.0 open source licence.</li>
+<li>PuReGoMe uses standard file formats (e.g., CSV files) for data exchange.</li>
+<li>PuReGoMe refers to other objects such as websites.</li>
+<li>PureGoMe is registered in the Research Software Directory that captures the most relevant metadata, including the identifier, in searchable and indexable form.</li>
+</ul>
+
+
+<h3 id="software-3-gammashiny">Software 3: gammaShiny</h3>
+<center><img src="media/gammashiny-logo.png" alt="gammashiny software logo" width="300"/></center>
+<p>
+
+<a href="https://doi.org/10.5281/zenodo.4139005">gammaShiny</a> is an application that provides enhanced graphical user interfaces for the R gamma package8. It is used to process in-situ gamma-ray spectrometry measurements for luminescence dating.</p>
+<ul>
+<li>gammaShiny has been deposited in the HAL French national archive and it has a persistent globally unique identifier, with the HAL identifier of the metadata record and a SWHID, identifying specifically the software artefact on the Software Heritage universal software source code archive.</li>
+<li>Thanks to the HAL platform, where a licence is mandatory, gammaShiny is under a GNU General Public Licence v3.0.</li>
+<li>The archived versions of gammaShiny’s source code in Software Heritage include a codemeta.json file, identifiable with a SWHID, where other metadata is available including dependencies named in CodeMeta (&ldquo;softwareRequirements&rdquo;).</li>
+</ul>
+
+
+<h2 id="do-you-agree">Do you agree?</h2>
+<p>The examples were taken from 
+
+<a href="https://doi.org/10.1038/s41597-022-01710-x">this paper</a>.
+In the Results section of the paper you will find the authors&rsquo; analysis of the software, which contains the statements above, mapped to the FAIR4RS Principles.</p>
+<p>Do you agree with their assessment?</p>
+
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Lesson content © Netherlands eScience Center,
+      <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (images: see credits);
+      source: <a href="https://github.com/esciencecenter-digital-skills/research-software-support">research-software-support</a>.</p>
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+    <p class="credits">Thumbnails: The Research Software Landscape: Photo by <a href="https://unsplash.com/@kalenemsley?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Kalen Emsley</a> on <a href="https://unsplash.com/photos/green-mountain-across-body-of-water-Bkci_8qcdvQ?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a> · Generative AI: <a href="https://www.flickr.com/photos/arthur-caranta/3061094186/">Photo</a> by <a href="https://www.flickr.com/photos/arthur-caranta/">Arthur Caranta</a> under <a href="https://creativecommons.org/licenses/by-sa/2.0/deed.en">CC BY-SA 2.0</a>, cropped. · Software Licenses: 
+
+<a href="https://unsplash.com/photos/laptop-compute-displaying-command-prompt-vII7qKAk-9A?utm_content=creditShareLink&amp;utm_medium=referral&amp;utm_source=unsplash">thumbnail-licenses</a> Photo by <a href="https://unsplash.com/@disruptxn?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Desola Lanre-Ologun</a> on <a href="https://unsplash.com/photos/laptop-compute-displaying-command-prompt-vII7qKAk-9A?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></p>
+    <p>Hugo variant of the <a href="https://github.com/OleMussmann/NEBULA_2.0">NEBULA successor PoC</a>.</p>
+  </footer>
+
+  <script src="/NEBULA_2.0/pr-preview/pr-2/hugo/pagefind/pagefind-ui.js"></script>
+  <script>
+    (() => {
+      const btn = document.getElementById("theme-toggle");
+      const order = ["auto", "light", "dark"];
+      const label = { auto: "Auto", light: "Light", dark: "Dark" };
+      let t = document.documentElement.dataset.theme || "auto";
+      btn.textContent = label[t];
+      btn.addEventListener("click", () => {
+        t = order[(order.indexOf(t) + 1) % order.length];
+        if (t === "auto") delete document.documentElement.dataset.theme;
+        else document.documentElement.dataset.theme = t;
+        try { localStorage.setItem("theme", t); } catch (e) {}
+        btn.textContent = label[t];
+      });
+    })();
+    window.addEventListener("DOMContentLoaded", () => {
+      if (window.PagefindUI) new PagefindUI({ element: "#search", showSubResults: true, showImages: false });
+    });
+  </script>
+</body>
+</html>

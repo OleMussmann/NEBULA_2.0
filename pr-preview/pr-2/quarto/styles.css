@@ -1,0 +1,16 @@
+/* Quarto variant tweaks. Study-view styles are in shared/study.css. */
+
+/* Hub cards: equal thumbnail height. */
+.quarto-grid-item .card-img-top img,
+.quarto-grid-item img.card-img-top {
+  height: 160px;
+  object-fit: cover;
+}
+
+/* Type badges (Quarto categories) on module tables and page titles. */
+.listing-categories .listing-category,
+.quarto-category {
+  text-transform: uppercase;
+  font-size: 0.7em;
+  letter-spacing: 0.05em;
+}
