@@ -1,0 +1,78 @@
+/* Study view: every slide followed by its notes (output of build_study.py).
+ * Shared by all three variants; each one includes this file as-is.
+ *
+ * Slide content keeps the deck's inline layout styles (floats, widths,
+ * borders). The rules below make those readable on a text page without
+ * editing the content.
+ */
+
+.study-intro {
+  margin-bottom: 2rem;
+}
+
+.study-slide {
+  margin: 2rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(127, 127, 127, 0.35);
+  scroll-margin-top: 5rem; /* keep #<id> targets clear of sticky headers */
+}
+
+.study-slide:target {
+  outline: 3px solid rgba(0, 157, 221, 0.5);
+  outline-offset: 0.5rem;
+}
+
+/* The slide itself: a framed box, floats contained inside it. */
+.study-slide-content {
+  display: flow-root;
+  padding: 1rem 1.25rem;
+  border-radius: 6px;
+  background: rgba(127, 127, 127, 0.07);
+}
+
+.study-slide-content img,
+.study-slide-content svg,
+.study-slide-content video {
+  max-width: 100%;
+  height: auto;
+}
+
+.study-slide-content table {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Side-by-side float layouts from the deck: keep them on wide screens,
+ * stack them on narrow ones (the inline widths are percentages of a
+ * 16:9 slide and become unreadable on a phone). */
+@media (max-width: 720px) {
+  .study-slide-content [style*="float"] {
+    float: none !important;
+    width: auto !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+  }
+}
+
+/* Notes read as prose under the slide. */
+.study-notes {
+  margin: 1rem 0 0.5rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(0, 157, 221, 0.6);
+}
+
+.study-present {
+  margin-top: 0.5rem;
+  font-size: 0.9em;
+}
+
+.study-present a::before {
+  content: "▶ ";
+}
+
+/* Presenter-only notes are removed by build_study.py; this is a safety net
+ * for content that reaches a page without going through it. */
+.presenter-only {
+  display: none;
+}
