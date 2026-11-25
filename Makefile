@@ -2,8 +2,10 @@
 #
 #   make study     generate <stem>.deck.html + <stem>.study.md next to every
 #                  slides file in content/ (build artefacts, git-ignored)
+#   make quarto    build the Quarto variant into quarto/_site
+#   make verify-quarto   browser checks (run in `nix develop .#verify`)
 #   make content   re-import content/ from upstream (REF=<commit|branch>)
-#   make clean     remove generated decks and study views
+#   make clean     remove generated decks, study views and variant outputs
 
 PYTHON ?= python3
 REF    ?= main
@@ -12,7 +14,7 @@ REF    ?= main
 # views carry `type: study`, so they never match.
 SLIDES := $(shell grep -l -E '^type:[[:space:]]*slides[[:space:]]*$$' content/modules/*/*.md 2>/dev/null)
 
-.PHONY: study content clean
+.PHONY: study content clean quarto verify-quarto
 
 study:
 	$(PYTHON) tools/build_study.py $(SLIDES)
@@ -20,5 +22,13 @@ study:
 content:
 	tools/import_content.sh $(REF)
 
+quarto:
+	cd quarto && quarto render
+
+verify-quarto:
+	$(PYTHON) tools/verify_site.py quarto --site quarto/_site
+
 clean:
 	find content -name '*.deck.html' -delete -o -name '*.study.md' -delete
+	rm -rf quarto/_site quarto/.quarto quarto/main quarto/modules quarto/hub \
+	       quarto/_shared quarto/index.qmd quarto/_generated.yml

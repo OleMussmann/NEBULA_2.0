@@ -19,6 +19,16 @@
             nodejs_22    # variant 3 (Astro Starlight) + Pagefind via npx
           ];
         };
+
+        # Headless-browser checks: tools/verify_site.py (`make verify-<variant>`)
+        verify = pkgs.mkShell {
+          packages = with pkgs; [
+            gnumake
+            (python3.withPackages (ps: [ ps.playwright ]))
+          ];
+          PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+          PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
+        };
       });
     };
 }

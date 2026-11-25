@@ -12,6 +12,8 @@ files.
 
 ```
 tools/build_study.py      slides.md → slides.deck.html (reveal.js) + slides.study.md (study view)
+tools/nebula_content.py   read content/ (config, modules, pages) and rewrite its site links
+tools/verify_site.py      acceptance checks in headless Chromium, per variant
 tools/import_content.sh   refresh content/ from research-software-support
 content/                  sparse copy of research-software-support (see content/SOURCE)
 shared/study.css          study-view styles, used by all variants
@@ -29,6 +31,8 @@ a generator work; map frontmatter inside the variant instead.
 ```sh
 nix develop          # or open in a devcontainer / Codespace
 make study           # generate decks and study views next to each slides.md
+make quarto          # build the Quarto variant into quarto/_site
+nix develop .#verify --command make verify-quarto   # browser checks
 make content REF=…   # re-import content from upstream (default: main)
 make clean
 ```

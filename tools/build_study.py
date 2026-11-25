@@ -38,7 +38,7 @@ V_SEP = re.compile(r"^\r?\n?==\r?\n?$", re.M)
 NOTES_SEP = re.compile(r"^Note:", re.M)
 FRONTMATTER = re.compile(r"\A---\s*\n(.*?)\n---\s*\n", re.S)
 SLIDE_ATTR = re.compile(r"<!--\s*\.slide:\s*(.*?)-->", re.S)
-HEADING = re.compile(r"^(#{1,6})\s+(.+?)\s*#*\s*$", re.M)
+HEADING = re.compile(r"^(#{1,6})[ \t]+(.+?)[ \t]*#*[ \t]*$", re.M)
 PRESENTER_ONLY = re.compile(
     r'<div class="presenter-only">.*?</div>', re.S | re.I
 )
@@ -159,13 +159,16 @@ import Search from "{cdn}/reveal.js@{REVEAL_VERSION}/plugin/search/search.esm.js
 import Math from "{cdn}/reveal.js@{REVEAL_VERSION}/plugin/math/math.esm.js";
 import Escience from "{cdn}/escience_theme@{THEME_VERSION}/escience.js";
 const params = new URLSearchParams(location.search);
-new Reveal({{
+// Exposed as window.Reveal, like reveal.js's non-module build (debugging,
+// tools/verify_site.py).
+const deck = window.Reveal = new Reveal({{
   hash: true, controls: true, progress: true, center: true, transition: "none",
   // ?annotations shows notes under the slides (NEBULA default). Not ?notes:
   // the notes plugin auto-opens the speaker window for that parameter.
   showNotes: params.has("annotations"),
   plugins: [Markdown, Notes, Search, Math, Escience],
-}}).initialize();
+}});
+deck.initialize();
 </script>
 </body>
 </html>
