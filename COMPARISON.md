@@ -175,6 +175,17 @@ Quarto's HTML pass treats overlapping sections.
 
 ### Open issues
 
+- **Edit link position varies.** Quarto puts "Edit this page" (`repo-actions`)
+  at the bottom of the table-of-contents margin. A page without TOC
+  entries has no margin, and the link moves to the page footer, where it is
+  easy to miss (e.g. "Learning objectives", which has no headings, and
+  every exercise page; see the next point).
+- **Exercise headings are not in the TOC.** `prepare.py` wraps exercise
+  bodies in a callout; Quarto leaves headings inside callouts out of the
+  TOC, so an exercise whose only heading is inside it ("Client Settings")
+  gets an empty TOC. Possible fix (not done): an own edit link under the
+  page bar on every page with `repo-actions` off, and the exercise frame as
+  a styled div instead of a callout.
 - Quarto itself emits a few duplicate ids (light/dark theme `<link>`s,
   `fig-*` on images in the Landscape study view). Not ours; harmless so far.
 - With several content repos, `repo-subdir` is project-wide: edit links for
@@ -273,6 +284,8 @@ version in CI and expect small template/config edits on upgrades.
 
 ### Open issues
 
+- No table of contents on any page (the other two variants have one);
+  Hugo's `.TableOfContents` in the layouts would add it.
 - The navigation wraps to two lines at 1280 px; cosmetic.
 - No previous/next navigation inside a module (not required; would be
   more template code).
