@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Software Licensing – Research Software Support</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-fd5c854a7a39bc65df0e8c9d2c93c9d7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-e25229e3f770c1c5e0df84cb2d2f0c08.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-fd5c854a7a39bc65df0e8c9d2c93c9d7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../_shared/study.css">
+<link rel="stylesheet" href="../../_shared/module-nav.css">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Research Software Support</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Lessons</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../main/about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../main/yellowpages.html"> 
+<span class="menu-text">Yellow Pages</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../main/contribute.html"> 
+<span class="menu-text">Contribute</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../main/workshops.html"> 
+<span class="menu-text">Workshops</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../poc.html"> 
+<span class="menu-text">About this PoC</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#software-licensing--1" id="toc-software-licensing--1" class="nav-link active" data-scroll-target="#software-licensing--1">Software Licensing</a>
+  <ul class="collapse">
+  <li><a href="#common-questions--1" id="toc-common-questions--1" class="nav-link" data-scroll-target="#common-questions--1">Common questions</a></li>
+  <li><a href="#about-copyright--1" id="toc-about-copyright--1" class="nav-link" data-scroll-target="#about-copyright--1">About copyright</a></li>
+  <li><a href="#using-others-software--1" id="toc-using-others-software--1" class="nav-link" data-scroll-target="#using-others-software--1">Using others’ software</a></li>
+  <li><a href="#why-share-software--1" id="toc-why-share-software--1" class="nav-link" data-scroll-target="#why-share-software--1">Why share software?</a></li>
+  <li><a href="#how-to-share-software--1" id="toc-how-to-share-software--1" class="nav-link" data-scroll-target="#how-to-share-software--1">How to share software</a></li>
+  <li><a href="#who-owns-a-work--1" id="toc-who-owns-a-work--1" class="nav-link" data-scroll-target="#who-owns-a-work--1">Who owns a work?</a></li>
+  <li><a href="#kinds-of-licenses--1" id="toc-kinds-of-licenses--1" class="nav-link" data-scroll-target="#kinds-of-licenses--1">Kinds of licenses</a></li>
+  <li><a href="#choosing-a-license--1" id="toc-choosing-a-license--1" class="nav-link" data-scroll-target="#choosing-a-license--1">Choosing a license</a></li>
+  <li><a href="#contributing-to-software--1" id="toc-contributing-to-software--1" class="nav-link" data-scroll-target="#contributing-to-software--1">Contributing to software</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/OleMussmann/NEBULA_2.0/edit/main/content/modules/licenses/slides.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Software Licensing</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">slides</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<nav class="module-nav" aria-label="Pages in this module"><div class="module-nav-title">Software Licenses</div><ul class="module-nav-pages"><li><a class="module-nav-page" href="info.html"><span class="module-nav-icon" title="info"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v6"></path><path d="M12 7.5h.01"></path></svg></span><span>Learning objectives</span></a></li><li><a class="module-nav-page" href="slides.html" aria-current="page"><span class="module-nav-icon" title="slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1"></rect><path d="M12 16v3"></path><path d="M8 21l4-2 4 2"></path></svg></span><span>Software Licensing</span></a></li><li><a class="module-nav-page" href="copyright.html"><span class="module-nav-icon" title="reading"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5C5.5 4.5 9 4.5 12 6.5c3-2 6.5-2 9-1V19c-2.5-1-6-1-9 1-3-2-6.5-2-9-1z"></path><path d="M12 6.5V20"></path></svg></span><span>Copyright</span></a></li><li><a class="module-nav-page" href="ex_finding_the_license.html"><span class="module-nav-icon" title="exercise"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"></path><path d="M13.5 6.5l4 4"></path></svg></span><span>Find the license</span></a></li><li><a class="module-nav-page" href="licenses.html"><span class="module-nav-icon" title="reading"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5C5.5 4.5 9 4.5 12 6.5c3-2 6.5-2 9-1V19c-2.5-1-6-1-9 1-3-2-6.5-2-9-1z"></path><path d="M12 6.5V20"></path></svg></span><span>Software licenses</span></a></li><li><a class="module-nav-page" href="how_to_share.html"><span class="module-nav-icon" title="reading"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5C5.5 4.5 9 4.5 12 6.5c3-2 6.5-2 9-1V19c-2.5-1-6-1-9 1-3-2-6.5-2-9-1z"></path><path d="M12 6.5V20"></path></svg></span><span>How to share software</span></a></li><li><a class="module-nav-page" href="ex_choose_a_license.html"><span class="module-nav-icon" title="exercise"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"></path><path d="M13.5 6.5l4 4"></path></svg></span><span>Choose a license</span></a></li><li><a class="module-nav-page" href="university_policy.html"><span class="module-nav-icon" title="reading"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5C5.5 4.5 9 4.5 12 6.5c3-2 6.5-2 9-1V19c-2.5-1-6-1-9 1-3-2-6.5-2-9-1z"></path><path d="M12 6.5V20"></path></svg></span><span>Software policies</span></a></li></ul></nav>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/escience_theme@0.4.0/components.css">
+
+<p class="study-intro"><a href="slides.deck.html">Open as presentation</a> · <a href="slides.deck.html?annotations">with notes</a></p>
+
+<section class="study-slide" id="software-licensing">
+
+<div class="study-slide-content escience-components">
+
+<h2 id="software-licensing--1" class="anchored">Software Licensing</h2>
+</div>
+
+<p class="study-present"><a href="slides.deck.html#/software-licensing">Present from slide 1</a></p>
+
+</section>
+
+<section class="study-slide" id="common-questions">
+
+<div class="study-slide-content escience-components">
+
+<h3 id="common-questions--1" class="anchored">Common questions</h3>
+<ul>
+<li>Can I use this software I found online?</li>
+<li>Can I share my software with others?</li>
+<li>Can I contribute to someone else’s software?</li>
+</ul>
+</div>
+
+<div class="study-notes">
+
+<p>There are three different things researchers do with software that are affected by licensing: using someone else’s software, sharing your own software, and contributing to someone else’s software (or having others contribute to yours).</p>
+<p>You’re probably most likely to get questions on the second topic, because the first is so commonly done that people either know the answer or don’t know that it’s even an issue, while the third one is still pretty rare in practice.</p>
+<p>Software is covered by copyright, and that’s the main legal context in which we’ll look at these questions here.</p>
+</div>
+
+<p class="study-present"><a href="slides.deck.html#/common-questions">Present from slide 2</a></p>
+
+</section>
+
+<section class="study-slide" id="about-copyright">
+
+<div class="study-slide-content escience-components">
+
+<div style="width: 70%; float: left; margin-top: 10%">
+
+<h3 id="about-copyright--1" class="anchored">About copyright</h3>
+<ul>
+<li>Berne convention on copyright</li>
+<li>Owned by author or employer?</li>
+<li>Can be licensed</li>
+</ul>
+</div>
+
+<div style="width: 30%; float: right">
+
+<img src="media/Zytgloggeturm_Bern.jpg" width="100%">
+
+</div>
+
+<div style="float: left; clear: both; padding-left: 25%; padding-top: 1em">
+
+<p><small>Photo by <a href="//commons.wikimedia.org/wiki/User:JoachimKohler-HB" title="User:JoachimKohler-HB">JoachimKohler-HB</a> - <span class="int-own-work" lang="en">Own work</span>, <a href="https://creativecommons.org/licenses/by-sa/4.0" title="Creative Commons Attribution-Share Alike 4.0">CC BY-SA 4.0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=140063312">Link</a></small></p>
+</div>
+
+</div>
+
+<div class="study-notes">
+
+<p>By the Berne convention, software is automatically protected by copyright when it is made. Depending on the country, protection lasts 50 years or more. The owner of the copyright is the only one who can copy, publish, and modify the software.</p>
+<p>If you make software as part of a job for an employer, then your employer owns the copyright. Otherwise, you are the owner (unless there’s a contract somewhere that says otherwise).</p>
+<p>The owner of the copyright on a work can give permission to others to do things they would otherwise not be allowed to do, like copying, publishing and modifying the work. A document that describes what they can do is called a copyright license. These licenses can be given to a specific party, usually as part of a contract, or they can be offered to the general public.</p>
+</div>
+
+<p class="study-present"><a href="slides.deck.html#/about-copyright">Present from slide 3</a></p>
+
+</section>
+
+<section class="study-slide" id="using-others-software">
+
+<div class="study-slide-content escience-components">
+
+<h3 id="using-others-software--1" class="anchored">Using others’ software</h3>
+<ul>
+<li>Two ways of using software</li>
+<li>You need a license</li>
+<li>Licenses sometimes implicit, or home-made</li>
+<li>Open Source is better and safer</li>
+<li>Different Open Source licenses available</li>
+</ul>
+</div>
+
+<div class="study-notes">
+
+<p>There are two ways of using someone else’s software: running it, and incorporating it into your own program. Both are covered by copyright, because you need to download and because you’re making a derivative work.</p>
+<p>So you need copyright permission, which is to say a license. In science, these are sometimes implied, by a researcher publishing the code without an explicit license, or home-made, which is not recommended because a non-expert will overlook many of the details of copyright law.</p>
+<p>It’s better if the software has an Open Source license, because these are professionally written and have standard, well-known meanings. We will go into that a bit more later. There are websites available that explain all the standard Open Source licenses in ordinary language, so that you can easily decide whether you can use a certain software package. You don’t need to be (or have) a lawyer to use Open Source software.</p>
+</div>
+
+<p class="study-present"><a href="slides.deck.html#/using-others-software">Present from slide 4</a></p>
+
+</section>
+
+<section class="study-slide" id="why-share-software">
+
+<div class="study-slide-content escience-components">
+
+<h3 id="why-share-software--1" class="anchored">Why share software?</h3>
+<div style="width: 50%; float: left; margin-top: 1em; margin-left: 5%;">
+
+<ul>
+<li>Reproducibility</li>
+<li>Increasing impact</li>
+<li>Academic freedom of employees</li>
+<li>Saving by collaborating</li>
+<li>Public funding</li>
+</ul>
+</div>
+
+<div style="width: 40%; float: right; margin-right: 4%;">
+<img src="media/Stephanie_Morales_Sharing.jpg" width="100%">
+</div>
+
+<div style="clear: both; margin: auto; padding-top: .5em;">
+<small>Photo by <a href="https://unsplash.com/@stephaniemoarr?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Stephanie Morales</a> on <a href="https://unsplash.com/photos/person-holding-white-ceramic-mug-DGt9zA3Fr0g?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></small>
+</div>
+
+</div>
+
+<div class="study-notes">
+
+<p>Scientific software is sometimes shared, but also sometimes kept to themselves by the researchers making it. Here are some reasons that sharing scientific software is important:</p>
+<ul>
+<li>Software is a scientific method, and it must be shared for the science to be reproducible.</li>
+<li>Sharing software will bring users of the methods and citations to papers about it</li>
+<li>Researchers frequently change jobs, moving from university to university. Without permission from their previous employers, they would have to start rebuilding their software from scratch every time they move to a new university, which would be very inefficient.</li>
+<li>Many of the most pressing problems that scientist work on involve complex, multifaceted systems that can only be properly studied in collaboration. Where software is involved, which is to say almost everywhere in academic research, researchers need to be able to exchange software and collaborate on its development, including across projects.</li>
+<li>The software was most likely funded with public money, and should therefore be available to the public, just like papers are published Open Access.</li>
+</ul>
+</div>
+
+<p class="study-present"><a href="slides.deck.html#/why-share-software">Present from slide 5</a></p>
+
+</section>
+
+<section class="study-slide" id="how-to-share-software">
+
+<div class="study-slide-content escience-components">
+
+<h3 id="how-to-share-software--1" class="anchored">How to share software</h3>
+<div style="width: 50%; float: left; margin-top: 1em; margin-left: 5%;">
+
+<ul>
+<li>Put it online</li>
+<li>Add a license
+<ol type="1">
+<li>Who owns the software?</li>
+<li>Dependencies?</li>
+<li>Kinds of licenses</li>
+</ol></li>
+</ul>
+</div>
+
+<div style="width: 40%; float: right; margin-right: 4%;">
+<img src="media/Stephanie_Morales_Sharing.jpg" width="100%">
+</div>
+
+<div style="clear: both; margin: auto; padding-top: .5em;">
+<small>Photo by <a href="https://unsplash.com/@stephaniemoarr?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Stephanie Morales</a> on <a href="https://unsplash.com/photos/person-holding-white-ceramic-mug-DGt9zA3Fr0g?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></small>
+</div>
+
+</div>
+
+<div class="study-notes">
+
+<p>To share software effectively, you need to give it a license, preferably an Open Source one.</p>
+<p>To do that, you need to be the owner of the copyright, or at least be able to act on behalf of the owners. This may be very simple but it can also be very complex. More on the next slide.</p>
+<p>The next thing to consider is whether other software has been used in the software you’ve made (that’s almost always the case) and how those so-called dependencies are licensed, as this may constrain your choice.</p>
+<p>Finally, different Open Source licenses specify different terms and conditions for use, and you need to decide what you want there.</p>
+</div>
+
+<p class="study-present"><a href="slides.deck.html#/how-to-share-software">Present from slide 6</a></p>
+
+</section>
+
+<section class="study-slide" id="who-owns-a-work">
+
+<div class="study-slide-content escience-components">
+
+<h3 id="who-owns-a-work--1" class="anchored">Who owns a work?</h3>
+<ul>
+<li>Work for hire</li>
+<li>Consortium agreements</li>
+<li>Funding constraints</li>
+</ul>
+</div>
+
+<div class="study-notes">
+
+<p>In most countries, including The Netherlands, any work you do as part of your tasks as an employee of an organisation belongs to your employer, not to you. After all, they’re paying you to do the work. This means that the copyright on any software written by a university employee is owned by the university.</p>
+<p>Science is often done in consortia, which are typically governed by a Consortium Agreement. Those often have a section on Intellectual Property that applies. Sadly those sections often don’t mention copyright, but they do usually state that each partner gets to own the things they’ve made. That means that if your researcher has worked together on the software with researcher at one of the partners, that there are two owners that need to decide on licensing together.</p>
+<p>Funding may also come with restrictions or stipulations regarding ownership. For example, eScience Center grants come with a rule that says that both parties co-own the software, even if it was written by one of them, and that it will be published under the Apache License unless otherwise agreed.</p>
+</div>
+
+<p class="study-present"><a href="slides.deck.html#/who-owns-a-work">Present from slide 7</a></p>
+
+</section>
+
+<section class="study-slide" id="kinds-of-licenses">
+
+<div class="study-slide-content escience-components">
+
+<h3 id="kinds-of-licenses--1" class="anchored">Kinds of licenses</h3>
+<table class="caption-top table">
+<tbody>
+<tr class="odd" data-align="center" style="border: 0.1em solid black">
+<th colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border: 0.1em solid black;">Free and Open Source</th>
+<th rowspan="3" data-quarto-table-cell-role="th" data-valign="center" style="text-align: center; border: 0.1em solid black;">Proprietary</th>
+</tr>
+<tr class="even" data-align="center" style="border: 0.1em solid black">
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border: 0.1em solid black;">Copyleft</th>
+<th rowspan="2" data-quarto-table-cell-role="th" style="text-align: center; border: 0.1em solid black;">Permissive</th>
+</tr>
+<tr class="odd" data-align="center" style="border: 0.1em solid black">
+<th data-quarto-table-cell-role="th" style="text-align: center; border: 0.1em solid black;">Strong</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; border: 0.1em solid black;">Weak</th>
+</tr>
+<tr class="even" data-align="center" style="border: 0.1em solid black">
+<td style="text-align: center; border: 0.1em solid black; padding: 1em;">GPL<sup>1</sup> AGPL<sup>2</sup></td>
+<td style="text-align: center; border: 0.1em solid black; padding: 1em;">LGPL<sup>3</sup> MPL<sup>4</sup></td>
+<td style="text-align: center; border: 0.1em solid black; padding: 1em;">BSD<sup>5</sup> MIT<sup>6</sup> Apache</td>
+<td style="text-align: center;">Research only, No&nbsp;copying, No&nbsp;modification</td>
+</tr>
+</tbody>
+</table>
+
+<div style="margin-top: 1em; font-size: 70%; line-height: 2em">
+  <sup>1</sup>GPL: GNU General Public License <sup>2</sup>AGPL: Affero General Public License <sup>3</sup>LGPL: GNU Lesser General Public License <sup>4</sup>MPL: Mozilla Public License <sup>5</sup>BSD: Berkeley Software Distribution <sup>6</sup>MIT: Massachusetts Institute of Technology
+</div>
+</div>
+
+<div class="study-notes">
+
+<p>Software licenses can be classified into different categories, which is helpful to get a quick idea for what kind of license you are dealing with. First, there are Open Source and non-Open Source licenses. Open Source licenses allow you to use the software, share it, change it, and share your changes. Proprietary software licenses do not allow one or more of these things. Note that this is not about being commercial, you can actually sell copies of Open Source programs, although you’re not very likely to find buyers.</p>
+<p>Copyleft licenses say that if you modify the licensed software or incorporate it into your own, that that new software package must then be licensed under the same license. A permissive license allows licensing the new work under any license. As a result, copyleft software needs to remain open source, while permissively licensed software can be made proprietary.</p>
+<p>Within the copyleft licenses we can distinguish strong copyleft, which covers both modified versions and use in other programs, from weak copyleft, which only limits modification. So a weak copyleft license keeps the licensed software package itself Open Source, but can be used as a part of proprietary software, while a strong copyleft license keeps the software from being used in (but not with) proprietary software (it is a bit vague legally where the limit is).</p>
+<p>Finally, the Affero GPL is designed for use with software that is designed to be installed on a server and accessed remotely, for example through a web browser. A normal copyleft license does not require the server owner to give a copy of the software running on the server to the users, while the AGPL does.</p>
+</div>
+
+<p class="study-present"><a href="slides.deck.html#/kinds-of-licenses">Present from slide 8</a></p>
+
+</section>
+
+<section class="study-slide" id="choosing-a-license">
+
+<div class="study-slide-content escience-components">
+
+<h3 id="choosing-a-license--1" class="anchored">Choosing a license</h3>
+<ul>
+<li>Use a standard Open Source license</li>
+<li>Check your policy (if applicable)</li>
+<li>Use a tool</li>
+</ul>
+</div>
+
+<div class="study-notes">
+
+<p>The next step is to choose a license. If at all possible, use a standard Open Source license, because it will make everyone’s lives much easier. Do not use Creative Commons licenses, as they’re not designed for use with software.</p>
+<p>Next, check if your organisation has a policy that covers software licenses. Those are still a bit rare, but they’re being worked on in many places so it’s likely that you’ll have one at some point. Check whether it specifies a particular license, or maybe a range of acceptable ones.</p>
+<p>Finally, there are some nice tools available that make it easier to select an Open Source license. We’ll have a look at that in the exercise.</p>
+</div>
+
+<p class="study-present"><a href="slides.deck.html#/choosing-a-license">Present from slide 9</a></p>
+
+</section>
+
+<section class="study-slide" id="contributing-to-software">
+
+<div class="study-slide-content escience-components">
+
+<h3 id="contributing-to-software--1" class="anchored">Contributing to software</h3>
+<div style="width: 55%; float: left; margin-top: 1em;">
+
+<ul>
+<li>Under the license</li>
+<li>Contributor License Agreements
+<ul>
+<li>Who are you dealing with?</li>
+<li>Transfer or license?</li>
+</ul></li>
+</ul>
+</div>
+
+<div style="width: 44%; float: right;">
+<img src="media/Kleine_Dinge.jpg" width="100%">
+</div>
+
+<div style="clear: both; margin: auto; padding-top: .5em;">
+<small>Photo by <a href="https://unsplash.com/@markkoenig?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Mark König</a> on <a href="https://unsplash.com/photos/white-and-green-quote-board-xCEuxxhpY3o?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></small>
+</div>
+
+</div>
+
+<div class="study-notes">
+
+<p>The most common way of contributing to an open source project is to do it under the license associated with the project. That means that you keep the copyright on your addition or modification, and license it under the same license as the existing code. This is the norm for small projects run by volunteers (or scientists). This case is similar to sharing your own code under a given license.</p>
+<p>Larger, more professionally run Open Source projects sometimes require a Contributor License Agreement. This is a contract that states what the recipient of your improvement can do with it. These are not standardised, so the contents vary.</p>
+<p>When evaluating these, it’s good to look at who you’re dealing with. A commercial entity, like Google, or a governance organisation like the Apache Foundation. The latter non-profit offers support for Open Source projects, including making sure that everything is properly licensed. Google is of course a commercial entity.</p>
+<p>Some CLAs require you to transfer ownership of the copyright on your contribution to someone else, which can be a good idea if that sole copyright holder can be trusted, for example because it makes it easier to upgrade the license. It may also allow them to turn your work proprietary however. In other cases, you’re just giving explicit permission to distribute your contribution as Open Source software, which seems more just.</p>
+<p>In general with CLAs, you should be careful with commercial entities (state aid!), and it’s in any case probably wise to get your legal department involved.</p>
+</div>
+
+<p class="study-present"><a href="slides.deck.html#/contributing-to-software">Present from slide 10</a></p>
+
+</section>
+
+<section class="study-slide" id="slide-10-0">
+
+<div class="study-slide-content escience-components">
+
+<p><a href="https://www.esciencecenter.nl">www.esciencecenter.nl</a></p>
+<p>info@esciencecenter.nl</p>
+<p>020 - 460 47 70</p>
+</div>
+
+<p class="study-present"><a href="slides.deck.html#/slide-10-0">Present from slide 11</a></p>
+
+</section>
+
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/olemussmann\.github\.io\/NEBULA_2\.0\/quarto\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Lesson content © Netherlands eScience Center, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (images: see credits); source: <a href="https://github.com/esciencecenter-digital-skills/research-software-support">research-software-support</a>.<br>Thumbnails: The Research Software Landscape: Photo by <a href="https://unsplash.com/@kalenemsley?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Kalen Emsley</a> on <a href="https://unsplash.com/photos/green-mountain-across-body-of-water-Bkci_8qcdvQ?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a> · Generative AI: <a href="https://www.flickr.com/photos/arthur-caranta/3061094186/">Photo</a> by <a href="https://www.flickr.com/photos/arthur-caranta/">Arthur Caranta</a> under <a href="https://creativecommons.org/licenses/by-sa/2.0/deed.en">CC BY-SA 2.0</a>, cropped. · Software Licenses: <a href="https://unsplash.com/photos/laptop-compute-displaying-command-prompt-vII7qKAk-9A?utm_content=creditShareLink&amp;utm_medium=referral&amp;utm_source=unsplash">thumbnail-licenses</a> Photo by <a href="https://unsplash.com/@disruptxn?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Desola Lanre-Ologun</a> on <a href="https://unsplash.com/photos/laptop-compute-displaying-command-prompt-vII7qKAk-9A?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/OleMussmann/NEBULA_2.0/edit/main/content/modules/licenses/slides.md" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Quarto variant of the <a href="https://github.com/OleMussmann/NEBULA_2.0">NEBULA successor PoC</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NEBULA successor PoC</title>
+  <style>
+    :root { --fg: #1f2328; --muted: #59636e; --bg: #fff; --card: #f6f8fa; --border: #d1d9e0; --accent: #009ddd; }
+    @media (prefers-color-scheme: dark) {
+      :root { --fg: #e6edf3; --muted: #9198a1; --bg: #0d1117; --card: #151b23; --border: #3d444d; }
+    }
+    body { margin: 0; font: 17px/1.6 system-ui, sans-serif; color: var(--fg); background: var(--bg); }
+    main { max-width: 52rem; margin: 0 auto; padding: 2rem 1rem; }
+    .variants { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; }
+    a.variant { display: block; padding: 1rem 1.25rem; border: 1px solid var(--border); border-radius: 8px;
+                background: var(--card); color: var(--fg); text-decoration: none; }
+    a.variant:hover { border-color: var(--accent); }
+    a.variant strong { display: block; font-size: 1.2em; }
+    a.variant span { color: var(--muted); font-size: 0.9em; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+<main>
+  <h1>NEBULA successor PoC</h1>
+  <p>The same three lessons (Software Licenses, The Research Software Landscape,
+     Generative AI)
+     built with three static site generators, to compare them as a
+     replacement for NEBULA.</p>
+  <div class="variants">
+    <a class="variant" href="quarto/"><strong>Quarto</strong><span>Pandoc-based, Python-friendly</span></a>
+    <a class="variant" href="hugo/"><strong>Hugo</strong><span>Single Go binary, Go templates</span></a>
+    <a class="variant" href="starlight/"><strong>Astro Starlight</strong><span>Node, schema-validated content</span></a>
+  </div>
+  <p>Source, findings and comparison:
+     <a href="https://github.com/OleMussmann/NEBULA_2.0">github.com/OleMussmann/NEBULA_2.0</a>.</p>
+</main>
+</body>
+</html>
