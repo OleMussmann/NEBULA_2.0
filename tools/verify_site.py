@@ -33,7 +33,9 @@ sys.path.insert(0, str(REPO / "tools"))
 import build_study  # noqa: E402
 from nebula_content import load  # noqa: E402
 
-PREFIX = "NEBULA_2.0"
+# Path the site is served under (make passes SITE_PATH; PR previews use a
+# deeper one, e.g. /NEBULA_2.0/pr-preview/pr-3).
+PREFIX = os.environ.get("SITE_PATH", "/NEBULA_2.0").strip("/")
 
 
 # --- per-variant knowledge: URLs and search UI ------------------------------
@@ -213,7 +215,7 @@ def main() -> int:
 
     tmp = Path(tempfile.mkdtemp(prefix="verify-"))
     try:
-        (tmp / PREFIX).mkdir()
+        (tmp / PREFIX).mkdir(parents=True)
         os.symlink(args.site.resolve(), tmp / PREFIX / args.variant)
         fixture_dir = tmp / "fixture"
         build_study.build(REPO / "tools" / "fixtures" / "presenter_only.md", fixture_dir)

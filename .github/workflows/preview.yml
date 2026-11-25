@@ -1,0 +1,52 @@
+# Builds every pull request as a full site under
+# https://olemussmann.github.io/NEBULA_2.0/pr-preview/pr-<number>/ and posts
+# the link as a PR comment; closing the PR removes the preview.
+#
+# The preview is published before the browser checks run, so authors get a
+# preview even when a check fails; the failed check still marks the PR.
+#
+# Pull requests from forks get a read-only token and cannot publish a
+# preview. Edits in the GitHub web editor by people with write access to
+# this repository create a branch here, not a fork, and do get one.
+
+name: PR preview
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+permissions:
+  contents: write        # push to gh-pages
+  pull-requests: write   # comment with the preview link
+
+concurrency:
+  group: preview-${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    env:
+      SITE_PATH: /NEBULA_2.0/pr-preview/pr-${{ github.event.number }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v31
+        if: github.event.action != 'closed'
+
+      - name: Build all three variants
+        if: github.event.action != 'closed'
+        run: nix develop --command make site
+
+      - name: Publish or remove the preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: _site${{ env.SITE_PATH }}
+          umbrella-dir: pr-preview
+
+      - name: Browser checks
+        if: github.event.action != 'closed'
+        run: |
+          for v in quarto hugo starlight; do
+            nix develop .#verify --command make verify-$v
+          done

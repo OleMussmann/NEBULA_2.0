@@ -85,6 +85,13 @@ Findings that apply to every generator:
     colour), and fragments the author semi-fades on purpose.
   Whether reveal.js's scroll view (rendered slides as a scrolling page)
   works with `escience_theme` is untested.
+- **Serving path (CI previews):** PR previews live one level deeper than
+  the site (`/NEBULA_2.0/pr-preview/pr-<n>/<variant>/`), so the base path
+  is a build parameter (`SITE_PATH`). Quarto's output is fully relative and
+  works under any path unchanged (only `sitemap.xml`/`robots.txt` carry the
+  absolute URL). Hugo takes it as `--baseURL`, Starlight as Astro `base`
+  (read from the environment in `src/site.mjs`); both write absolute paths
+  into every page.
 
 ## Quarto (1.10.18)
 

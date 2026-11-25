@@ -1,3 +1,4 @@
+# Default for a plain `hugo` run; `make hugo` passes --baseURL from SITE_PATH.
 baseURL = "https://olemussmann.github.io/NEBULA_2.0/hugo/"
 title = "Research Software Support"
 locale = "en"

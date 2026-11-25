@@ -5,9 +5,9 @@
 #   make quarto    build the Quarto variant into quarto/_site
 #   make hugo      build the Hugo variant into hugo/public (+ Pagefind index)
 #   make starlight build the Starlight variant into starlight/dist
-#   make site      build all three, assemble _site/NEBULA_2.0/<variant>/ as
+#   make site      build all three, assemble _site$(SITE_PATH)/<variant>/ as
 #                  GitHub Pages will serve it (+ landing page)
-#   make serve     make site, then serve it on http://localhost:$(PORT)/NEBULA_2.0/
+#   make serve     make site, then serve it on http://localhost:$(PORT)$(SITE_PATH)/
 #   make verify-<variant>   browser checks (run in `nix develop .#verify`)
 #   make content   re-import content/ from upstream (REF=<commit|branch>;
 #                  CONTENT_REPO=<path or URL> for another source)
@@ -17,6 +17,13 @@ PYTHON ?= python3
 PORT   ?= 8000
 PAGEFIND ?= npx --yes pagefind@1.3.0
 REF    ?= main
+
+# Where the site is served: $(SITE_ORIGIN)$(SITE_PATH)/<variant>/. Hugo and
+# Starlight build absolute paths from these; Quarto's output is relative.
+# PR previews override SITE_PATH (/NEBULA_2.0/pr-preview/pr-<n>).
+SITE_ORIGIN ?= https://olemussmann.github.io
+SITE_PATH   ?= /NEBULA_2.0
+export SITE_ORIGIN SITE_PATH
 
 # Every Markdown file whose frontmatter says `type: slides`. Generated study
 # views carry `type: study`, so they never match.
@@ -34,21 +41,22 @@ quarto:
 	cd quarto && quarto render
 
 hugo: study
-	cd hugo && hugo --gc --cleanDestinationDir
+	cd hugo && hugo --gc --cleanDestinationDir --baseURL "$(SITE_ORIGIN)$(SITE_PATH)/hugo/"
 	$(PAGEFIND) --site hugo/public
 
 starlight:
 	cd starlight && npm ci --no-audit --no-fund && npm run build
 
 site: quarto hugo starlight
-	rm -rf _site && mkdir -p _site/NEBULA_2.0
-	cp -r quarto/_site _site/NEBULA_2.0/quarto
-	cp -r hugo/public _site/NEBULA_2.0/hugo
-	cp -r starlight/dist _site/NEBULA_2.0/starlight
-	cp shared/index.html _site/NEBULA_2.0/index.html
+	rm -rf _site && mkdir -p _site$(SITE_PATH)
+	cp -r quarto/_site _site$(SITE_PATH)/quarto
+	cp -r hugo/public _site$(SITE_PATH)/hugo
+	cp -r starlight/dist _site$(SITE_PATH)/starlight
+	cp shared/index.html _site$(SITE_PATH)/index.html
+	touch _site$(SITE_PATH)/.nojekyll   # Pages would drop _astro/ etc. otherwise
 
 serve: site
-	@echo "Serving on http://localhost:$(PORT)/NEBULA_2.0/  (Ctrl-C to stop)"
+	@echo "Serving on http://localhost:$(PORT)$(SITE_PATH)/  (Ctrl-C to stop)"
 	$(PYTHON) -m http.server $(PORT) --bind 127.0.0.1 --directory _site
 
 # THEME_DIR=<escience_theme checkout>: decks and study views load the theme
