@@ -1,0 +1,23 @@
+{{/*
+  Visible modules in hub order: categories in config.json's categoryOrder,
+  then any other category alphabetically; within one, by `order`.
+  Returns a slice of dicts {category, modules}.
+*/}}
+{{ $props := hugo.Data.nebula.config.publicProps }}
+{{ $modules := slice }}
+{{ with site.GetPage "/modules" }}
+  {{ $modules = where .Sections "Params.visibility" "visible" }}
+{{ end }}
+{{ $extra := slice }}
+{{ range $modules }}
+  {{ if not (in $props.categoryOrder .Params.category) }}
+    {{ $extra = $extra | append .Params.category }}
+  {{ end }}
+{{ end }}
+{{ $groups := slice }}
+{{ range $props.categoryOrder | append (sort (uniq $extra)) }}
+  {{ with where $modules "Params.category" . }}
+    {{ $groups = $groups | append (dict "category" (index . 0).Params.category "modules" (sort . "Params.order")) }}
+  {{ end }}
+{{ end }}
+{{ return $groups }}

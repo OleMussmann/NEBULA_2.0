@@ -1,20 +1,32 @@
 ---
-// Starlight's footer (edit link, prev/next) plus the content credit.
+// Starlight's footer (edit link, prev/next) plus the content credit and the
+// hub thumbnails' photo credits (module index.md bodies), in hub order.
 import Default from '@astrojs/starlight/components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const credits = (await getCollection('modules', (m) => m.data.visibility === 'visible' && m.body))
+	.sort((a, b) => a.data.categoryRank - b.data.categoryRank || a.data.order - b.data.order)
+	.map((m) => `${m.data.title}: ${m.rendered?.html.replace(/^\s*<p>|<\/p>\s*$/g, '') ?? ''}`);
 ---
 
 <Default><slot /></Default>
+<footer class="content-credits">
 <p class="content-credit">
 	Lesson content © Netherlands eScience Center,
 	<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (images: see credits);
 	source: <a href="https://github.com/esciencecenter-digital-skills/research-software-support">research-software-support</a>.
 	Astro Starlight variant of the <a href="https://github.com/OleMussmann/NEBULA_2.0">NEBULA successor PoC</a>.
 </p>
+{credits.length > 0 && <p class="content-credit" set:html={`Thumbnails: ${credits.join(' · ')}`} />}
+</footer>
 
 <style>
 	.content-credit {
 		margin-top: 2rem;
 		font-size: var(--sl-text-xs);
 		color: var(--sl-color-gray-3);
+	}
+	.content-credit + .content-credit {
+		margin-top: 0.5rem;
 	}
 </style>

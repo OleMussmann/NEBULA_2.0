@@ -5,7 +5,7 @@
   each slides source in content/ (the content loader reads the study view)
 - media/ folders and decks are copied to public/modules/<m>/ so pages,
   study views and decks find them at the same relative paths as in NEBULA
-- shared/study.css is copied to src/styles/
+- shared/study.css and shared/module-nav.css are copied to src/styles/
 
 Generated paths are git-ignored.
 """
@@ -44,7 +44,8 @@ def main() -> int:
             shutil.copy2(deck, out / deck.name)
     styles = HERE / "src" / "styles"
     styles.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(REPO / "shared" / "study.css", styles / "study.css")
+    for css in ("study.css", "module-nav.css"):
+        shutil.copy2(REPO / "shared" / css, styles / css)
     print(f"prepare.py: decks and media for {len(list(public.iterdir()))} modules")
     return 0
 

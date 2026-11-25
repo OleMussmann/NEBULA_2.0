@@ -9,7 +9,8 @@
 #                  GitHub Pages will serve it (+ landing page)
 #   make serve     make site, then serve it on http://localhost:$(PORT)/NEBULA_2.0/
 #   make verify-<variant>   browser checks (run in `nix develop .#verify`)
-#   make content   re-import content/ from upstream (REF=<commit|branch>)
+#   make content   re-import content/ from upstream (REF=<commit|branch>;
+#                  CONTENT_REPO=<path or URL> for another source)
 #   make clean     remove generated decks, study views and variant outputs
 
 PYTHON ?= python3
@@ -50,14 +51,18 @@ serve: site
 	@echo "Serving on http://localhost:$(PORT)/NEBULA_2.0/  (Ctrl-C to stop)"
 	$(PYTHON) -m http.server $(PORT) --bind 127.0.0.1 --directory _site
 
+# THEME_DIR=<escience_theme checkout>: decks and study views load the theme
+# from there instead of jsDelivr (for an unreleased theme version).
+VERIFY_THEME = $(if $(THEME_DIR),--theme $(THEME_DIR))
+
 verify-quarto:
-	$(PYTHON) tools/verify_site.py quarto --site quarto/_site
+	$(PYTHON) tools/verify_site.py quarto --site quarto/_site $(VERIFY_THEME)
 
 verify-hugo:
-	$(PYTHON) tools/verify_site.py hugo --site hugo/public
+	$(PYTHON) tools/verify_site.py hugo --site hugo/public $(VERIFY_THEME)
 
 verify-starlight:
-	$(PYTHON) tools/verify_site.py starlight --site starlight/dist
+	$(PYTHON) tools/verify_site.py starlight --site starlight/dist $(VERIFY_THEME)
 
 clean:
 	find content -name '*.deck.html' -delete -o -name '*.study.md' -delete
@@ -65,4 +70,4 @@ clean:
 	       quarto/_shared quarto/index.qmd quarto/_generated.yml \
 	       hugo/public hugo/resources/_gen hugo/.hugo_build.lock \
 	       starlight/dist starlight/.astro starlight/public/modules \
-	       starlight/src/styles/study.css _site
+	       starlight/src/styles/study.css starlight/src/styles/module-nav.css _site

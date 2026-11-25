@@ -60,7 +60,11 @@ files = ["config.json"]
 [[module.mounts]]
 source = "../shared"
 target = "static/css"
-files = ["study.css"]
+files = ["study.css", "module-nav.css"]
+
+[[module.mounts]]
+source = "../shared/icons"
+target = "assets/icons"
 
 [[module.mounts]]
 source = "layouts"

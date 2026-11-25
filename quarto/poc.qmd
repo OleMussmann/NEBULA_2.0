@@ -5,7 +5,7 @@ repo-actions: false
 
 This is the **Quarto** variant of the
 [NEBULA successor PoC](https://github.com/OleMussmann/NEBULA_2.0): the same
-two lessons are also built with Hugo and Astro Starlight.
+three lessons are also built with Hugo and Astro Starlight.
 
 ## Linking to a slide
 

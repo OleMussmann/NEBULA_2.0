@@ -6,7 +6,7 @@ everything under "Findings" was observed while building and checking.
 
 Acceptance checks are automated: `tools/verify_site.py <variant>` serves the
 built site under `/NEBULA_2.0/<variant>/` and drives headless Chromium
-through hub, module pages, study view, deck (theme, `#/<id>`, `S` speaker
+through hub, module page bar, study view, deck (theme, `#/<id>`, `S` speaker
 view, `?annotations`), presenter-only notes, slide-id links, `main/` pages,
 search and broken requests.
 
@@ -16,10 +16,12 @@ Code every variant uses, not counted per variant:
 
 | File | Lines | Purpose |
 |---|---|---|
-| `tools/build_study.py` | 242 | decks + study views |
-| `tools/nebula_content.py` | 148 | read config/modules/pages, rewrite links |
-| `shared/study.css` | 78 | study-view layout |
-| `tools/verify_site.py` | 285 | acceptance checks (test code) |
+| `tools/build_study.py` | 275 | decks + study views, inline-colour lint |
+| `tools/nebula_content.py` | 180 | read config/modules/pages, rewrite links, module page bar |
+| `shared/study.css` | 97 | study-view layout |
+| `shared/module-nav.css` | 65 | module page bar |
+| `shared/icons/*.svg` | 4 files | page-type icons (info, reading, exercise, slides) |
+| `tools/verify_site.py` | 499 | acceptance checks (test code) |
 
 Findings that apply to every generator:
 
@@ -36,15 +38,62 @@ Findings that apply to every generator:
   bug), which merged headings with following HTML blocks. Fixed in step 2.
 - The deck instance is exposed as `window.Reveal` (as in reveal.js's
   non-module build) so tools can inspect it.
+- **Module navigation follows NEBULA:**
+  a module opens on its first page in `order` (the learning objectives in
+  every lesson), and every page of a module starts with a bar listing all
+  its pages in `order`, each with a page-type icon, the current one
+  marked. Same markup and CSS in all variants (`shared/module-nav.css`,
+  `shared/icons/`). The module `index.md` is not rendered as a page, as
+  in NEBULA: its frontmatter feeds the hub card and the bar. Its body
+  (the thumbnail's photo credit; gen-ai's is CC BY-SA and must be shown)
+  goes into the site footer as "Thumbnails: <module>: <credit> · …", in
+  hub order. Per variant: Quarto generates the footer's left part in
+  `prepare.py`; Hugo renders `.RawContent` of the module sections in
+  `baseof.html` (ordering shared with the hub via a partial); Starlight
+  adds a second content collection (`modules`) so Astro renders the
+  bodies, and the footer override reads it. NEBULA-style links
+  to `/modules/<m>` go to the module's first page.
+
+- **HTML-heavy deck (gen-ai):** the deck renders as in NEBULA (background
+  video and images, fragments, grids). The study view builds every slide
+  (35) and shows each one without its `data-background-*` images/video and
+  with all fragments expanded; the deck's `<style>` blocks end up in the
+  page.
+- **Slide content outside the deck (theme):** `escience_theme` sets text
+  colour per slide through reveal.js's `has-light/dark-background` classes
+  (from `data-state`); its `.card` sets its own dark text. A box with only
+  an inline light background (`style="background: lightgray"`, as gen-ai
+  used) inherits the surrounding text colour: white on light grey on a dark
+  slide, and in the study view in dark mode. Fix at the source rather than
+  per site:
+  - `escience_theme` 0.4.0 (branch, unpublished) ships the layout classes
+    as `components.css`, usable outside a deck under `.escience-components`;
+    adds a `.details` panel for steppers whose steps are tiles, and
+    `.muted`; card links get a darker blue (the brand blue was 2.2:1 on the
+    card's grey).
+  - Study views load `components.css` and wrap every slide in
+    `.escience-components`; slides follow the site's light/dark mode.
+    Steppers show every step with its detail in place (the risk map keeps
+    which detail belongs to which category).
+  - gen-ai rewritten to the theme classes (branch for upstream).
+  - `build_study.py` warns about inline `color`/`background` per slide;
+    `verify_site.py` checks text contrast (3:1, opacity included) in every
+    deck slide with all fragments shown and in the study view in light and
+    dark mode, and overlapping fragments. Against the old gen-ai the lint
+    gives 9 warnings and the dark study view fails.
+  - Not checked: text on background images (the scan assumes the overlay
+    colour), and fragments the author semi-fades on purpose.
+  Whether reveal.js's scroll view (rendered slides as a scrolling page)
+  works with `escience_theme` is untested.
 
 ## Quarto (1.10.18)
 
 ### Findings
 
-- **All acceptance checks pass** locally under the sub-path (32/32; 34/34 with the image checks added in step 4),
-  except the CI/Pages and web-editor PR preview items (step 5).
-- **Custom code:** `quarto/prepare.py` 276 lines (pre-render),
-  `_quarto.yml` 49, `styles.css` 16, `poc.qmd` 24 (PoC page with the
+- **All acceptance checks pass** locally under the sub-path (32/32; 34/34 with the image checks added in step 4;
+  44/44 with the module page bar checks; 61/61 with gen-ai and the dark-mode, overlap and scheme-switch checks), except the CI/Pages and web-editor PR preview items (step 5).
+- **Custom code:** `quarto/prepare.py` 251 lines (pre-render),
+  `_quarto.yml` 50, `styles.css` 16, `poc.qmd` 24 (PoC page with the
   example slide link). No templates, no Lua filters, no EJS.
 - **Toolchain:** Quarto (bundles Pandoc, Deno, Dart Sass) + Python 3 for
   the pre-render. One binary install; no npm.
@@ -52,11 +101,10 @@ Findings that apply to every generator:
 - **Frontmatter mapping** happens in `prepare.py`, which mirrors `content/`
   into the project (content is never edited):
   - `abstract` → `description`, `thumbnail` → `image: media/<file>`
-  - page `type` → `categories` (rendered as a badge; module table "Type"
-    column)
+  - page `type` → `categories` (rendered as a badge under the title)
   - `type: exercise` body wrapped in a callout
-  - module page: a listing of its pages in `order`, from a generated
-    YAML file
+  - module page bar: raw HTML from `module_nav_html()` prepended to each
+    module page's body; module `index.md` is not mirrored at all
   - hub: one grid listing per category, in `categoryOrder`; only
     `visibility: visible` modules
   - `type: slides` source is replaced by its study view under the same
@@ -96,8 +144,8 @@ Findings that apply to every generator:
    exercise (`title`, `type: exercise`, `order`).
 3. Write the exercise; "Commit changes" → "Create a new branch and start a
    pull request".
-4. The PR preview (step 5) shows it in the module table at its `order`,
-   with the exercise callout.
+4. The PR preview (step 5) shows it in the module page bar at its
+   `order`, with the exercise callout.
 
 No Quarto-specific step; `prepare.py` picks it up.
 
@@ -122,11 +170,11 @@ Quarto's HTML pass treats overlapping sections.
 
 ### Findings
 
-- **All acceptance checks pass** locally under the sub-path (32/32; 34/34 with the image checks added in step 4),
-  except the CI/Pages and web-editor PR preview items (step 5). No
+- **All acceptance checks pass** locally under the sub-path (32/32; 34/34 with the image checks added in step 4;
+  44/44 with the module page bar checks; 61/61 with gen-ai and the dark-mode, overlap and scheme-switch checks), except the CI/Pages and web-editor PR preview items (step 5). No
   duplicate ids.
-- **Custom code:** 211 lines of Go templates (`layouts/` 185 + content
-  adapter 26), `hugo.toml` 71 (mostly commented mounts), `site.css` 117,
+- **Custom code:** 228 lines of Go templates (`layouts/` 195 + content
+  adapter 33), `hugo.toml` 75 (mostly commented mounts), `site.css` 117,
   `poc.md` 25. No pre-build script of its own: only the shared
   `build_study.py` runs before Hugo (`make hugo` depends on `make study`).
 - **Toolchain:** one Hugo binary + Python 3 (decks) + Node only for
@@ -146,6 +194,11 @@ Quarto's HTML pass treats overlapping sections.
   - Module `index.md` cannot be mounted as content (see below); a
     *content adapter* (`content/modules/_content.gotmpl`) reads it from
     `assets/` and creates the module section page, frontmatter → params.
+    The section is built with `render: never` (a module opens on its
+    first page) and `list: always`.
+  - Module page bar: a partial (`_partials/module-nav.html`) in the three
+    page layouts; icons are mounted from `shared/icons` into `assets/` and
+    inlined with `resources.Get`.
 - **Study view:** `slides.md` renders its generated study view from
   `assets/` via `.RenderString`, so the page keeps the source's path
   (`/modules/<m>/slides.html`) and its edit link.
@@ -159,7 +212,9 @@ Quarto's HTML pass treats overlapping sections.
 - **Search:** none built in; Pagefind (indexes `public/` after the build,
   ~0.06 s) with its default UI.
 - **Theme:** Hugo ships none. The look is a hand-written `baseof.html` +
-  117 lines of CSS. A community theme would reduce the CSS but adds a
+  ~140 lines of CSS, including a light/dark/auto switch (~30 lines of
+  inline JS, `data-theme` on `<html>`, remembered in `localStorage`) that
+  Quarto and Starlight provide built in. A community theme would reduce the CSS but adds a
   dependency whose templates we would have to override for `type`s.
 
 ### What was awkward
@@ -181,6 +236,11 @@ Quarto's HTML pass treats overlapping sections.
 - Goldmark's automatic heading ids collide with slide ids in the study
   view; fixed with a heading render hook that suffixes ids on `slides`
   pages.
+- A section with `build.render: never` also drops out of its parent's
+  `.Sections` and `.Pages` unless `list: always` is
+  set explicitly, although the docs give `always` as the default.
+- Template scoping: inside `range` + `with`, `.` and `$` point at
+  different pages; loops need a named variable (`range $p := …`).
 
 ### How a non-coder adds an exercise
 
@@ -198,8 +258,8 @@ version in CI and expect small template/config edits on upgrades.
 ### Open issues
 
 - The navigation wraps to two lines at 1280 px; cosmetic.
-- No table of contents or previous/next navigation inside a module (not
-  required; would be more template code).
+- No previous/next navigation inside a module (not required; would be
+  more template code).
 - Several content repos: one mount set per repo; edit links would need the
   repo per page (a param from the mount is not available; untested).
 
@@ -208,13 +268,15 @@ version in CI and expect small template/config edits on upgrades.
 ### Findings
 
 - **All acceptance checks pass** locally under the sub-path (34/34, incl.
-  the slide-image checks added in this step), except the CI/Pages and
+  the slide-image checks added in this step; 44/44 with the module page
+  bar checks; 61/61 with gen-ai and the dark-mode, overlap and
+  scheme-switch checks), except the CI/Pages and
   web-editor PR preview items (step 5). No duplicate ids.
-- **Custom code:** content loader `nebula-loader.ts` 154 lines, content
+- **Custom code:** content loader `nebula-loader.ts` 177 lines, content
   reader `nebula.mjs` 65, `content.config.ts` 38 (schema),
-  `astro.config.mjs` 59 (sidebar from content), hub `index.astro` 39,
-  `Footer.astro` 20, `site.css` 41, `prepare.py` 53, `poc.md` 23. About
-  490 lines, TypeScript/JS for the most part.
+  `astro.config.mjs` 56 (sidebar from content), hub `index.astro` 39,
+  `Footer.astro` 20, `site.css` 41, `prepare.py` 54, `poc.md` 23. About
+  510 lines, TypeScript/JS for the most part.
 - **Toolchain:** Node 22 + npm (288 packages, lockfile committed) + Python 3
   (decks). Pagefind is built in.
 - **Clean build:** 4.8 s for `make clean && make starlight`, of which
@@ -233,9 +295,11 @@ version in CI and expect small template/config edits on upgrades.
   ```
 - **Frontmatter mapping** happens in the content loader (content is read
   in place): `editUrl` per page pointing at `content/`; exercise body
-  wrapped in a `:::tip[Exercise]` aside; module page gets the abstract and
-  a table of its pages; `slides` pages render their study view; NEBULA
-  root-absolute links rewritten.
+  wrapped in a `:::tip[Exercise]` aside; every module page gets the page
+  bar (raw HTML, same markup as `module_nav_html()`, reimplemented in TS);
+  module `index.md` is validated but not added as a page, so the hub reads
+  module frontmatter from the source directly; `slides` pages render their
+  study view; NEBULA root-absolute links rewritten.
 - **Sidebar:** one group per category in `categoryOrder`, a collapsible
   group per visible module, pages in `order` with the type as a badge;
   built in `astro.config.mjs` from the content (see "awkward").
@@ -268,6 +332,12 @@ version in CI and expect small template/config edits on upgrades.
 - `build.format: 'file'` keeps `info.html` next to `media/`; links are
   written with `.html` so they work on any static host.
 - Harmless build warnings: no `i18n` collection, no `404` entry.
+- `import.meta.url` in a page (the hub) or in the loader points into
+  Astro's build bundle, not the source file; paths to `content/` and
+  `shared/` are resolved from the working directory (`starlight/`).
+- The module page bar duplicates Starlight's sidebar, which already lists
+  each module's pages (with type badges). Kept for parity with NEBULA and
+  the other variants; in a Starlight-only build one of the two would go.
 
 ### How a non-coder adds an exercise
 

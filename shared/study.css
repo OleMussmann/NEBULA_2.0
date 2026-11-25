@@ -27,7 +27,7 @@
   display: flow-root;
   padding: 1rem 1.25rem;
   border-radius: 6px;
-  background: rgba(127, 127, 127, 0.07);
+  background: rgba(127, 127, 127, 0.08); /* a frame in light and dark mode */
 }
 
 .study-slide-content img,
@@ -53,6 +53,25 @@
     margin-right: 0 !important;
     padding-left: 0 !important;
   }
+}
+
+/* Slide content follows the site's light or dark mode. Theme components
+ * (.card, .columns, .stepper, .muted) come from escience_theme's
+ * components.css, which every study view loads; each slide box carries
+ * .escience-components. Inline colours in slide HTML are not adapted:
+ * build_study.py warns about them. */
+
+/* All fragments are shown at once in the study view. Fragments that a
+ * deck stacks in one place by hand to show them in turn (grid-area /
+ * r-stack) would overlap; lay them out one below the other instead. Only
+ * the row is reset: column spans of fragments in a grid layout stay.
+ * (The theme's .stepper handles this itself.) */
+.study-slide-content .fragment {
+  grid-row: auto !important;
+}
+
+.study-slide-content .r-stack {
+  display: block;
 }
 
 /* Notes read as prose under the slide. */

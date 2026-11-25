@@ -3,9 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    // Colour scheme chosen with the header switch (auto | light | dark);
+    // set before the stylesheets load, so the page does not flash.
+    (() => {
+      let t = "auto";
+      try { t = localStorage.getItem("theme") || "auto"; } catch (e) {}
+      if (t !== "auto") document.documentElement.dataset.theme = t;
+    })();
+  </script>
   <title>{{ if not .IsHome }}{{ .Title }} · {{ end }}{{ site.Title }}</title>
   <link rel="stylesheet" href="{{ "css/site.css" | relURL }}">
   <link rel="stylesheet" href="{{ "css/study.css" | relURL }}">
+  <link rel="stylesheet" href="{{ "css/module-nav.css" | relURL }}">
   <link rel="stylesheet" href="{{ "pagefind/pagefind-ui.css" | relURL }}">
 </head>
 <body>
@@ -21,6 +31,7 @@
       {{ with site.GetPage "/poc" }}<a href="{{ .RelPermalink }}">About this PoC</a>{{ end }}
     </nav>
     <div id="search" class="search"></div>
+    <button type="button" class="theme-toggle" id="theme-toggle" title="Colour scheme">Auto</button>
   </header>
 
   <main class="page" data-pagefind-body>
@@ -31,11 +42,33 @@
     <p>Lesson content © Netherlands eScience Center,
       <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (images: see credits);
       source: <a href="https://github.com/esciencecenter-digital-skills/research-software-support">research-software-support</a>.</p>
+    {{- /* Module index.md bodies: the hub thumbnails' photo credits. */ -}}
+    {{ $credits := slice }}
+    {{ range partial "hub-modules.html" . }}{{ range $m := .modules }}
+      {{ with replaceRE `\s+` " " (trim $m.RawContent " \n") }}
+        {{ $credits = $credits | append (printf "%s: %s" $m.Title . | $.RenderString) }}
+      {{ end }}
+    {{ end }}{{ end }}
+    {{ with $credits }}<p class="credits">Thumbnails: {{ delimit . " · " | safeHTML }}</p>{{ end }}
     <p>Hugo variant of the <a href="{{ site.Params.poc }}">NEBULA successor PoC</a>.</p>
   </footer>
 
   <script src="{{ "pagefind/pagefind-ui.js" | relURL }}"></script>
   <script>
+    (() => {
+      const btn = document.getElementById("theme-toggle");
+      const order = ["auto", "light", "dark"];
+      const label = { auto: "Auto", light: "Light", dark: "Dark" };
+      let t = document.documentElement.dataset.theme || "auto";
+      btn.textContent = label[t];
+      btn.addEventListener("click", () => {
+        t = order[(order.indexOf(t) + 1) % order.length];
+        if (t === "auto") delete document.documentElement.dataset.theme;
+        else document.documentElement.dataset.theme = t;
+        try { localStorage.setItem("theme", t); } catch (e) {}
+        btn.textContent = label[t];
+      });
+    })();
     window.addEventListener("DOMContentLoaded", () => {
       if (window.PagefindUI) new PagefindUI({ element: "#search", showSubResults: true, showImages: false });
     });

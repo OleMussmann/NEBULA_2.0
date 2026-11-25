@@ -1,36 +1,21 @@
 {{ define "main" }}
 {{/* Hub: modules grouped by category, in config.json's categoryOrder,
      then any other category alphabetically. Only visible modules. */}}
-{{ $props := hugo.Data.nebula.config.publicProps }}
-{{ $modules := slice }}
-{{ with site.GetPage "/modules" }}
-  {{ $modules = where .Sections "Params.visibility" "visible" }}
-{{ end }}
-{{ $extra := slice }}
-{{ range $modules }}
-  {{ if not (in $props.categoryOrder .Params.category) }}
-    {{ $extra = $extra | append .Params.category }}
-  {{ end }}
-{{ end }}
-{{ $cats := $props.categoryOrder | append (sort (uniq $extra)) }}
-
 <h1>{{ site.Title }}</h1>
-{{ range $cats }}
-  {{ $cat := . }}
-  {{ with where $modules "Params.category" $cat }}
-    <h2>{{ $cat }}</h2>
-    <div class="cards">
-      {{ range sort . "Params.order" }}
-        {{ $mod := . }}
-        <a class="card" href="{{ .RelPermalink }}">
-          {{ with .Params.thumbnail }}
-            <img src="{{ printf "modules/%s/media/%s" $mod.Params.module . | relURL }}" alt="" loading="lazy">
-          {{ end }}
-          <span class="card-title">{{ .Title }}</span>
-          <span class="card-text">{{ .Params.abstract }}</span>
-        </a>
-      {{ end }}
-    </div>
-  {{ end }}
+{{ range partial "hub-modules.html" . }}
+  <h2>{{ .category }}</h2>
+  <div class="cards">
+    {{ range .modules }}
+      {{ $mod := . }}
+      {{ $first := index (sort .RegularPages "Params.order") 0 }}
+      <a class="card" href="{{ $first.RelPermalink }}">
+        {{ with .Params.thumbnail }}
+          <img src="{{ printf "modules/%s/media/%s" $mod.Params.module . | relURL }}" alt="" loading="lazy">
+        {{ end }}
+        <span class="card-title">{{ .Title }}</span>
+        <span class="card-text">{{ .Params.abstract }}</span>
+      </a>
+    {{ end }}
+  </div>
 {{ end }}
 {{ end }}

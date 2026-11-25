@@ -1,0 +1,18 @@
+{{/*
+  Module page bar (styled by shared/module-nav.css): the module's pages in
+  `order`, one tab each with its type icon (shared/icons/<type>.svg).
+  Same markup as module_nav_html() in tools/nebula_content.py.
+*/}}
+{{ with .Parent }}{{ if .Params.module }}
+{{ $current := $ }}
+<nav class="module-nav" aria-label="Pages in this module">
+  <div class="module-nav-title">{{ .Title }}</div>
+  <ul class="module-nav-pages">
+  {{ range $p := sort .RegularPages "Params.order" }}
+    <li><a class="module-nav-page" href="{{ .RelPermalink }}"{{ if eq $p $current }} aria-current="page"{{ end }}>
+      {{- with resources.Get (printf "icons/%s.svg" $p.Type) }}<span class="module-nav-icon" title="{{ $p.Type }}">{{ .Content | safeHTML }}</span>{{ end -}}
+      <span>{{ .Title }}</span></a></li>
+  {{ end }}
+  </ul>
+</nav>
+{{ end }}{{ end }}

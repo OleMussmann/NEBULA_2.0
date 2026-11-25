@@ -4,7 +4,7 @@ title: About this PoC
 
 This is the **Astro Starlight** variant of the
 [NEBULA successor PoC](https://github.com/OleMussmann/NEBULA_2.0): the same
-two lessons are also built with Quarto and Hugo.
+three lessons are also built with Quarto and Hugo.
 
 ## Linking to a slide
 

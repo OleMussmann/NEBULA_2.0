@@ -5,6 +5,12 @@
   module's other pages, so index.md is not mounted as content. It is
   mounted under assets/nebula/ and turned into the section page here:
   frontmatter becomes params, the body becomes the page content.
+
+  The section page is not rendered (as in NEBULA, a module opens on its
+  first page): its params feed the hub card and the module page bar, and
+  its body (photo credits) stays in the source only.
+  `list: always` is needed: with `render: never` alone the module sections
+  drop out of .Sections and the hub is empty.
 */}}
 {{ range resources.Match "nebula/modules/*/index.md" }}
   {{ $slug := path.Base (path.Dir .Name) }}
@@ -21,6 +27,7 @@
       "title" $meta.title
       "params" $params
       "content" (dict "mediaType" "text/markdown" "value" (index . 0 2))
+      "build" (dict "render" "never" "list" "always")
     ) }}
   {{ end }}
 {{ end }}

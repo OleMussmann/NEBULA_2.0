@@ -146,3 +146,35 @@ def rewrite_site_links(text: str, resolve) -> str:
         return f'{m.group("pre")}{url}{m.group("frag") or ""}'
 
     return SITE_LINK.sub(sub, text)
+
+
+ICONS = Path(__file__).resolve().parent.parent / "shared" / "icons"
+NAV_TYPES = ("info", "reading", "exercise", "slides")
+
+
+def module_nav_html(mod: Module, current: Page) -> str:
+    """The module page bar (styled by shared/module-nav.css) as raw HTML.
+
+    One line without blank lines, so Markdown keeps it a single HTML block.
+    Links are relative: a module's pages are siblings in every variant.
+    """
+    from html import escape
+
+    items = []
+    for p in mod.pages:
+        icon = ""
+        if p.type in NAV_TYPES:
+            icon = (f'<span class="module-nav-icon" title="{p.type}">'
+                    f'{(ICONS / f"{p.type}.svg").read_text(encoding="utf-8").strip()}</span>')
+        cur = ' aria-current="page"' if p.path == current.path else ""
+        items.append(f'<li><a class="module-nav-page" href="{p.stem}.html"{cur}>{icon}'
+                     f'<span>{escape(p.meta.get("title", p.stem))}</span></a></li>')
+    return (f'<nav class="module-nav" aria-label="Pages in this module">'
+            f'<div class="module-nav-title">{escape(mod.meta.get("title", mod.slug))}</div>'
+            f'<ul class="module-nav-pages">{"".join(items)}</ul></nav>')
+
+
+def thumbnail_credit(mod: Module) -> str:
+    """The module index.md body (its thumbnail's photo credit) as one line
+    of Markdown/HTML, for a site footer; "" if the body is empty."""
+    return " ".join(mod.body.split())

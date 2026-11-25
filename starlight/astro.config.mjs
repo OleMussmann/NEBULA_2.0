@@ -27,10 +27,7 @@ const sidebar = [
 				.map((m) => ({
 					label: m.meta.title,
 					collapsed: true,
-					items: [
-						{ slug: m.index.id, label: 'Overview' },
-						...m.pages.map((p) => ({ slug: p.id, badge: badge(p.meta.type) })),
-					],
+					items: m.pages.map((p) => ({ slug: p.id, badge: badge(p.meta.type) })),
 				})),
 		}))
 		.filter((g) => g.items.length),
@@ -52,7 +49,7 @@ export default defineConfig({
 			// Starlight's Markdown transforms (asides, heading anchor links)
 			// only run on src/content/docs unless other folders are listed.
 			markdown: { processedDirs: ['../content'] },
-			customCss: ['./src/styles/site.css', './src/styles/study.css'],
+			customCss: ['./src/styles/site.css', './src/styles/study.css', './src/styles/module-nav.css'],
 			components: { Footer: './src/components/Footer.astro' },
 		}),
 	],

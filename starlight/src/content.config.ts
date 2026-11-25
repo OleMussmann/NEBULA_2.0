@@ -2,17 +2,28 @@ import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { docsSchema } from '@astrojs/starlight/schema';
 import { fileURLToPath } from 'node:url';
-import { nebulaLoader } from './nebula-loader';
+import { moduleSchema, nebulaLoader, nebulaModulesLoader } from './nebula-loader';
 import { BASE } from './site.mjs';
 
 const here = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 
+const contentRoot = process.env.NEBULA_CONTENT ?? here('../../content');
+
 export const collections = {
+	// Module index.md: frontmatter + rendered body (thumbnail credit), for
+	// the footer. Not pages: a module opens on its first page.
+	modules: defineCollection({
+		loader: nebulaModulesLoader({ roots: [contentRoot] }),
+		schema: moduleSchema.extend({
+			author: z.string().optional(),
+			categoryRank: z.number(),
+		}),
+	}),
 	docs: defineCollection({
 		loader: nebulaLoader({
 			sources: [
 				{
-					root: process.env.NEBULA_CONTENT ?? here('../../content'),
+					root: contentRoot,
 					editBase: 'https://github.com/OleMussmann/NEBULA_2.0/edit/main/content/',
 				},
 			],

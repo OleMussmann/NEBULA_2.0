@@ -5,18 +5,23 @@
 //   tools/build_study.py next to the source); the page keeps the source's
 //   id, so /modules/<m>/slides and "Edit this page" point at the deck source
 // - `type: exercise` bodies are wrapped in a Starlight aside
-// - module index pages get a table of the module's pages in `order`
-// - NEBULA root-absolute links (/main/x, /modules/m/p) point at this site;
-//   links to modules that are not in it go to the current NEBULA site
+// - every module page starts with the module's page bar (its pages in
+//   `order`, with type icons), as NEBULA's chapter bar
+// - module index.md is validated (moduleSchema) but not a page: as in
+//   NEBULA, a module opens on its first page; the hub reads the module
+//   frontmatter itself, and the body (photo credits) stays in the source
+// - NEBULA root-absolute links (/main/x, /modules/m/p) point at this site
+//   (/modules/m: the module's first page); links to modules that are not
+//   in it go to the current NEBULA site
 // Every page's frontmatter is validated by the collection schema
-// (content.config.ts); module index pages additionally by moduleSchema.
+// (content.config.ts).
 
 import { readFileSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { relative, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import type { Loader } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { loadSource, splitFrontmatter } from './nebula.mjs';
+import { categories, loadSource, splitFrontmatter } from './nebula.mjs';
 
 interface SourceOptions {
 	/** Content repo checkout, absolute path */
@@ -42,6 +47,31 @@ export const moduleSchema = z.object({
 	visibility: z.enum(['visible', 'hidden']),
 });
 
+// Relative to starlight/ (astro's cwd): import.meta.url may be a bundle path.
+const ICONS = resolve('../shared/icons') + '/';
+const NAV_TYPES = ['info', 'reading', 'exercise', 'slides'];
+const esc = (s: string) =>
+	String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+/** Module page bar (shared/module-nav.css); same markup as module_nav_html()
+ * in tools/nebula_content.py. One line, so Markdown keeps it one HTML block. */
+function moduleNav(mod: any, current: any): string {
+	const items = mod.pages.map((p: any) => {
+		const type = p.meta.type;
+		const icon = NAV_TYPES.includes(type)
+			? `<span class="module-nav-icon" title="${type}">${readFileSync(ICONS + type + '.svg', 'utf8').trim()}</span>`
+			: '';
+		const cur = p === current ? ' aria-current="page"' : '';
+		const stem = p.id.split('/').pop();
+		return `<li><a class="module-nav-page" href="${stem}.html"${cur}>${icon}<span>${esc(p.meta.title ?? stem)}</span></a></li>`;
+	});
+	return (
+		`<nav class="module-nav not-content" aria-label="Pages in this module">` +
+		`<div class="module-nav-title">${esc(mod.meta.title ?? mod.slug)}</div>` +
+		`<ul class="module-nav-pages">${items.join('')}</ul></nav>`
+	);
+}
+
 const SITE_LINK = /(\]\(|href=")(\/(?:main|modules)(?:\/[^)"#?\s]*)?)(#[^)"\s]*)?/g;
 const STUDY_HEADING = /<h([1-6]) id="([^"]+)"/g;
 const ANCHOR_LINK = /(<a class="sl-anchor-link" href="#)([^"]+)"/g;
@@ -55,14 +85,18 @@ export function nebulaLoader(opts: Options): Loader {
 
 			for (const src of opts.sources) {
 				const source = loadSource(src.root);
-				const ids = new Set<string>([
-					...source.main.map((p) => p.id),
-					...source.modules.flatMap((m) => [m.index.id, ...m.pages.map((p) => p.id)]),
+				// link target id -> page id; a module opens on its first page
+				const ids = new Map<string, string>([
+					...source.main.map((p: any) => [p.id, p.id] as [string, string]),
+					...source.modules.flatMap((m: any) => [
+						...(m.pages.length ? [[m.index.id, m.pages[0].id] as [string, string]] : []),
+						...m.pages.map((p: any) => [p.id, p.id] as [string, string]),
+					]),
 				]);
 				const rewrite = (body: string) =>
 					body.replace(SITE_LINK, (all, pre, path, frag = '') => {
 						const id = path.replace(/^\/|\/$/g, '');
-						if (ids.has(id)) return `${pre}${base}/${id}.html${frag}`;
+						if (ids.has(id)) return `${pre}${base}/${ids.get(id)}.html${frag}`;
 						if (id.startsWith('modules/')) return `${pre}${source.upstreamSite}${path}${frag}`;
 						ctx.logger.warn(`unresolved site link ${path}`);
 						return all;
@@ -114,17 +148,6 @@ export function nebulaLoader(opts: Options): Loader {
 								z.prettifyError(check.error),
 						);
 					}
-					const rows = mod.pages.map(
-						(p: any) => `| [${p.meta.title}](${base}/${p.id}.html) | ${p.meta.type ?? ''} |`,
-					);
-					const table = `\n\n| Page | Type |\n|---|---|\n${rows.join('\n')}\n`;
-					// Starlight shows `description` only in metadata; the abstract
-					// opens the module page as in NEBULA.
-					await add(mod.index, `${mod.meta.abstract}\n\n${mod.index.body}${table}`, {
-						module: mod.slug,
-						description: mod.meta.abstract,
-					});
-
 					for (const page of mod.pages) {
 						let body = page.body;
 						if (page.meta.type === 'slides') {
@@ -133,7 +156,7 @@ export function nebulaLoader(opts: Options): Loader {
 						} else if (page.meta.type === 'exercise') {
 							body = `:::tip[Exercise]\n${body.trim()}\n:::\n`;
 						}
-						await add(page, body, { module: mod.slug });
+						await add(page, `${moduleNav(mod, page)}\n\n${body}`, { module: mod.slug });
 					}
 				}
 			}
@@ -151,4 +174,43 @@ async function add_extra(ctx: any, id: string, file: string, meta: any, body: st
 	const data = await ctx.parseData({ id, data: { ...meta, editUrl: false }, filePath });
 	const rendered = await ctx.renderMarkdown(body, { fileURL: pathToFileURL(file) });
 	ctx.store.set({ id, data, body, rendered, filePath, digest: ctx.generateDigest(body) });
+}
+
+/** Module index.md files as their own collection (not pages): frontmatter
+ * plus the rendered body, which holds the thumbnail's photo credit. The
+ * footer lists these credits; the hub reads the same frontmatter. */
+export function nebulaModulesLoader(opts: { roots: string[] }): Loader {
+	return {
+		name: 'nebula-modules-loader',
+		async load(ctx) {
+			ctx.store.clear();
+			for (const root of opts.roots) {
+				const source = loadSource(root);
+				const cats: string[] = categories(source);
+				for (const mod of source.modules) {
+					const filePath = relative(process.cwd(), mod.index.file);
+					const data = await ctx.parseData({
+						id: mod.slug,
+						data: {
+							...mod.meta,
+							categoryRank: cats.indexOf(mod.meta.category ?? 'Other'),
+						},
+						filePath,
+					});
+					const body = mod.index.body.trim();
+					const rendered = await ctx.renderMarkdown(body.replace(/\s+/g, ' '), {
+						fileURL: pathToFileURL(mod.index.file),
+					});
+					ctx.store.set({
+						id: mod.slug,
+						data,
+						body,
+						rendered,
+						filePath,
+						digest: ctx.generateDigest(body + JSON.stringify(data)),
+					});
+				}
+			}
+		},
+	};
 }

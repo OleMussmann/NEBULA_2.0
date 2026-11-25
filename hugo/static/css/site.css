@@ -9,17 +9,40 @@
   --accent: #009ddd;      /* eScience blue */
   --accent-2: #3c0f3e;    /* eScience purple */
   --yellow: #ffb213;
-  color-scheme: light dark;
+  color-scheme: light;
 }
 
+/* Dark: the system setting, unless the header switch chose a scheme
+ * (data-theme on <html>, set in baseof.html). Same values twice. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --fg: #e6edf3;
     --muted: #9198a1;
     --bg: #0d1117;
     --panel: #151b23;
     --border: #3d444d;
+    color-scheme: dark;
   }
+}
+
+:root[data-theme="dark"] {
+  --fg: #e6edf3;
+  --muted: #9198a1;
+  --bg: #0d1117;
+  --panel: #151b23;
+  --border: #3d444d;
+  color-scheme: dark;
+}
+
+.theme-toggle {
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.9em;
+  cursor: pointer;
 }
 
 * { box-sizing: border-box; }

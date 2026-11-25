@@ -1,6 +1,7 @@
 # NEBULA successor PoC
 
-The same two-lesson site (Software Licenses, The Research Software Landscape)
+The same three-lesson site (Software Licenses, The Research Software Landscape,
+Generative AI)
 built three times — with Quarto, Hugo and Astro Starlight — to compare them
 as a replacement for NEBULA.
 
@@ -17,6 +18,8 @@ tools/verify_site.py      acceptance checks in headless Chromium, per variant
 tools/import_content.sh   refresh content/ from research-software-support
 content/                  sparse copy of research-software-support (see content/SOURCE)
 shared/study.css          study-view styles, used by all variants
+shared/module-nav.css     module page bar (pages in order, type icons), used by all variants
+shared/icons/             page-type icons for the bar
 quarto/  hugo/  starlight/
 .devcontainer/            Python + Quarto + Hugo + Node for Codespaces
 flake.nix                 the same toolchain on Nix
@@ -36,7 +39,9 @@ make hugo            # build the Hugo variant into hugo/public (+ Pagefind)
 make starlight       # build the Starlight variant into starlight/dist
 make serve           # all three as Pages serves them: http://localhost:8000/NEBULA_2.0/
 nix develop .#verify --command make verify-quarto   # browser checks (or verify-hugo, verify-starlight)
+                     #   THEME_DIR=<escience_theme checkout>: unpublished theme
 make content REF=…   # re-import content from upstream (default: main)
+                     #   CONTENT_REPO=<path>: e.g. a local clone's branch
 make clean
 ```
 

@@ -5,7 +5,7 @@ noedit: true
 
 This is the **Hugo** variant of the
 [NEBULA successor PoC](https://github.com/OleMussmann/NEBULA_2.0): the same
-two lessons are also built with Quarto and Astro Starlight.
+three lessons are also built with Quarto and Astro Starlight.
 
 ## Linking to a slide
 

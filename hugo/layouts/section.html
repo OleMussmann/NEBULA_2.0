@@ -1,21 +1,5 @@
 {{ define "main" }}
+{{/* Module sections are not rendered (see content/modules/_content.gotmpl). */}}
 {{ partial "page-header.html" . }}
-{{ with .Params.abstract }}<p class="lead">{{ . }}</p>{{ end }}
-{{ with .Params.author }}<p class="author">{{ . }}</p>{{ end }}
 {{ .Content }}
-
-{{/* Module page: its pages in `order`, with their type. */}}
-{{ with .RegularPages }}
-<table class="module-pages">
-  <thead><tr><th>Page</th><th>Type</th></tr></thead>
-  <tbody>
-  {{ range sort . "Params.order" }}
-    <tr>
-      <td><a href="{{ .RelPermalink }}">{{ .Title }}</a></td>
-      <td><span class="badge badge-{{ .Type }}">{{ .Type }}</span></td>
-    </tr>
-  {{ end }}
-  </tbody>
-</table>
-{{ end }}
 {{ end }}

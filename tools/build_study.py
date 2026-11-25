@@ -16,6 +16,13 @@ Every slide gets a stable id, derived from its first heading (or an explicit
 `id="..."` in its `<!-- .slide: -->` comment), so links survive inserting
 slides. The same id is used as the deck hash (#/<id>) and the study anchor.
 
+The study view shows slide content outside reveal.js. It loads the theme's
+components.css and wraps every slide in .escience-components, so theme
+components (.card, .columns, .stepper, .muted) look as in the deck and
+follow the page's light or dark mode. Inline text or background colours do
+not: they are written for one slide background. build_study.py warns about
+them and names the slide.
+
 Presenter-only notes: wrap text inside a Note: block in
 `<div class="presenter-only"> ... </div>`. It is removed from the study view
 and hidden in the deck's on-screen notes, but stays in the speaker view.
@@ -27,6 +34,7 @@ from __future__ import annotations
 
 import argparse
 import html
+import os
 import re
 import sys
 from dataclasses import dataclass
@@ -44,7 +52,16 @@ PRESENTER_ONLY = re.compile(
 )
 
 REVEAL_VERSION = "5.2.1"   # pin; NEBULA uses ~5.2.1
-THEME_VERSION = "0.3.0"    # escience_theme
+THEME_VERSION = "0.4.0"    # escience_theme
+CDN = "https://cdn.jsdelivr.net/npm"
+# Where escience.js, escience.css and components.css are loaded from. The
+# override is for trying an unreleased theme: tools/verify_site.py --theme
+# serves a local checkout in place of the default URL instead.
+THEME_URL = os.environ.get("ESCIENCE_THEME_URL", f"{CDN}/escience_theme@{THEME_VERSION}")
+
+# Inline colours in slide HTML: style="color: …" / style="background: …".
+INLINE_COLOUR = re.compile(
+    r'style="[^"]*(?<![\w-])(color|background(?:-color)?)\s*:\s*([^;"]+)', re.I)
 
 
 @dataclass
@@ -127,7 +144,7 @@ def deck_html(title: str, deck_md: str) -> str:
     # The Markdown goes into a <textarea data-template> so reveal.js reads it
     # verbatim; only a literal </textarea> would need escaping.
     safe_md = deck_md.replace("</textarea>", "&lt;/textarea>")
-    cdn = "https://cdn.jsdelivr.net/npm"
+    cdn = CDN
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -137,7 +154,7 @@ def deck_html(title: str, deck_md: str) -> str:
 <link rel="stylesheet" href="{cdn}/reveal.js@{REVEAL_VERSION}/dist/reveal.css">
 <link rel="stylesheet" href="{cdn}/reveal.js@{REVEAL_VERSION}/dist/theme/black.css">
 <link rel="stylesheet" href="{cdn}/reveal.js@{REVEAL_VERSION}/plugin/highlight/monokai.css">
-<link rel="stylesheet" href="{cdn}/escience_theme@{THEME_VERSION}/escience.css">
+<link rel="stylesheet" href="{THEME_URL}/escience.css">
 <style>.reveal .speaker-notes .presenter-only {{ display: none; }}</style>
 </head>
 <body>
@@ -157,7 +174,7 @@ import Markdown from "{cdn}/reveal.js@{REVEAL_VERSION}/plugin/markdown/markdown.
 import Notes from "{cdn}/reveal.js@{REVEAL_VERSION}/plugin/notes/notes.esm.js";
 import Search from "{cdn}/reveal.js@{REVEAL_VERSION}/plugin/search/search.esm.js";
 import Math from "{cdn}/reveal.js@{REVEAL_VERSION}/plugin/math/math.esm.js";
-import Escience from "{cdn}/escience_theme@{THEME_VERSION}/escience.js";
+import Escience from "{THEME_URL}/escience.js";
 const params = new URLSearchParams(location.search);
 // Exposed as window.Reveal, like reveal.js's non-module build (debugging,
 // tools/verify_site.py).
@@ -184,6 +201,8 @@ def study_md(meta: dict, slides: list[Slide], deck_href: str) -> str:
         f"order: {meta.get('order', 0)}",
         "---",
         "",
+        f'<link rel="stylesheet" href="{THEME_URL}/components.css">',
+        "",
         f'<p class="study-intro"><a href="{deck_href}">Open as presentation</a> · '
         f'<a href="{deck_href}?annotations">with notes</a></p>',
         "",
@@ -193,7 +212,7 @@ def study_md(meta: dict, slides: list[Slide], deck_href: str) -> str:
         lines += [
             f'<section class="study-slide" id="{s.sid}">',
             "",
-            f'<div class="study-slide-content">',
+            '<div class="study-slide-content escience-components">',
             "",
             demote_headings(s.body),
             "",
@@ -212,12 +231,26 @@ def study_md(meta: dict, slides: list[Slide], deck_href: str) -> str:
     return "\n".join(lines)
 
 
+def lint(src: Path, slides: list[Slide]) -> list[str]:
+    """Warnings for inline text/background colours, one per slide."""
+    out = []
+    for s in slides:
+        found = sorted({f"{m.group(1).lower()}: {m.group(2).strip()}" for m in INLINE_COLOUR.finditer(s.body)})
+        if found:
+            out.append(f"{src}: slide #{s.sid}: inline {', '.join(found)}. It may be unreadable "
+                       "on a dark slide or in the study view's dark mode; use .card, "
+                       ".muted or another theme class instead.")
+    return out
+
+
 def build(src: Path, outdir: Path) -> tuple[Path, Path]:
     meta, md = parse_frontmatter(src.read_text(encoding="utf-8"))
     if meta.get("type") not in (None, "slides"):
         raise SystemExit(f"{src}: not a slides file (type: {meta.get('type')})")
     slides = split_slides(md)
     assign_ids(slides)
+    for warning in lint(src, slides):
+        print(f"warning: {warning}", file=sys.stderr)
     outdir.mkdir(parents=True, exist_ok=True)
     deck_path = outdir / f"{src.stem}.deck.html"
     study_path = outdir / f"{src.stem}.study.md"

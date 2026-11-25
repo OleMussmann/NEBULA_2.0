@@ -10,7 +10,10 @@
   {{ $frag := "" }}
   {{ if gt (len $parts) 1 }}{{ $frag = printf "#%s" (index $parts 1) }}{{ end }}
   {{ with site.GetPage $path }}
-    {{ $url = printf "%s%s" .RelPermalink $frag }}
+    {{ $target := . }}
+    {{/* A module (section page, not rendered) opens on its first page. */}}
+    {{ if .IsSection }}{{ with sort .RegularPages "Params.order" }}{{ $target = index . 0 }}{{ end }}{{ end }}
+    {{ $url = printf "%s%s" $target.RelPermalink $frag }}
   {{ else }}
     {{ if hasPrefix $path "/modules/" }}
       {{ $p := hugo.Data.nebula.config.publicProps }}

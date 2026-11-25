@@ -1,4 +1,4 @@
 repo: https://github.com/esciencecenter-digital-skills/research-software-support
-commit: 4601b6e0c55e406545c8baec0e89e4ac11a674dd
-date: 2026-11-16T12:41:12+01:00
-paths: main config.json LICENSE.md modules/licenses modules/softwarelandscape
+commit: 630f391bf78d33da05386ad8f7a7612cd31bb310
+date: 2026-11-25T18:37:57+01:00
+paths: main config.json LICENSE.md modules/licenses modules/softwarelandscape modules/gen-ai

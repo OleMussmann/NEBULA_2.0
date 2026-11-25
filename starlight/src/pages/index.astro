@@ -1,35 +1,35 @@
 ---
 // Hub: modules grouped by category (config.json categoryOrder), visible only.
+// Module index.md is not a page (a module opens on its first page), so the
+// cards are built from the content source directly; the content loader has
+// already validated the module frontmatter (moduleSchema).
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import { getCollection } from 'astro:content';
-import { categories } from '../nebula.mjs';
+import { resolve } from 'node:path';
+import { loadSource, categories, isVisible } from '../nebula.mjs';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const modules = (await getCollection('docs', (e) => e.data.module && e.id === `modules/${e.data.module}`))
-	.filter((e) => (e.data.visibility ?? 'visible') === 'visible');
-const cats = categories({
-	categoryOrder: (await import('../../../content/config.json')).default.publicProps.categoryOrder,
-	modules: modules.map((e) => ({ meta: e.data })),
-});
-const title = (await import('../../../content/config.json')).default.publicProps.title;
+// import.meta.url points into the build bundle here; astro runs in starlight/.
+const source = loadSource(process.env.NEBULA_CONTENT ?? resolve('../content'));
+const modules = source.modules.filter((m) => isVisible(m) && m.pages.length);
+const title = source.props.title ?? 'Lessons';
 ---
 
 <StarlightPage frontmatter={{ title, tableOfContents: false }}>
 	{
-		cats.map((cat) => (
+		categories({ ...source, modules }).map((cat) => (
 			<section>
 				<h2>{cat}</h2>
 				<div class="hub-cards not-content">
 					{modules
-						.filter((e) => e.data.category === cat)
-						.sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0))
-						.map((e) => (
-							<a class="hub-card" href={`${base}/${e.id}.html`}>
-								{e.data.thumbnail && (
-									<img src={`${base}/modules/${e.data.module}/media/${e.data.thumbnail}`} alt="" loading="lazy" />
+						.filter((m) => (m.meta.category ?? 'Other') === cat)
+						.sort((a, b) => (a.meta.order ?? 0) - (b.meta.order ?? 0))
+						.map((m) => (
+							<a class="hub-card" href={`${base}/${m.pages[0].id}.html`}>
+								{m.meta.thumbnail && (
+									<img src={`${base}/modules/${m.slug}/media/${m.meta.thumbnail}`} alt="" loading="lazy" />
 								)}
-								<span class="hub-card-title">{e.data.title}</span>
-								<span class="hub-card-text">{e.data.abstract}</span>
+								<span class="hub-card-title">{m.meta.title}</span>
+								<span class="hub-card-text">{m.meta.abstract}</span>
 							</a>
 						))}
 				</div>

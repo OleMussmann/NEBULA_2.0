@@ -6,6 +6,7 @@
   "Edit this page" point at the deck source.
 */}}
 {{ partial "page-header.html" . }}
+{{ partial "module-nav.html" . }}
 {{ $path := printf "nebula/%s" (replaceRE `\.md$` ".study.md" .File.Path) }}
 {{ with resources.Get $path }}
   {{ $md := replaceRE `(?s)\A---\s*\n.*?\n---\s*\n` "" .Content }}
