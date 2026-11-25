@@ -34,3 +34,16 @@ make clean
 ```
 
 Generated `*.deck.html` and `*.study.md` are build artefacts and git-ignored.
+
+## License
+
+The code in this repository (everything outside `content/`) is licensed
+under the [Apache License 2.0](LICENSE).
+
+`content/` is **not** covered by that license. It is a copy of
+[research-software-support](https://github.com/esciencecenter-digital-skills/research-software-support)
+by the Netherlands eScience Center, at the commit recorded in
+`content/SOURCE`. Its text is licensed under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); image files keep
+their own terms, as credited in the lessons. See
+[`content/LICENSE.md`](content/LICENSE.md).
