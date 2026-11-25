@@ -47,6 +47,22 @@ make clean
 
 Generated `*.deck.html` and `*.study.md` are build artefacts and git-ignored.
 
+## CI and previews
+
+- `.github/workflows/deploy.yml`: every push to `main` builds all three
+  variants, runs the browser checks and publishes `_site/NEBULA_2.0/` to the
+  `gh-pages` branch, served at https://olemussmann.github.io/NEBULA_2.0/.
+- `.github/workflows/preview.yml`: every pull request is built under
+  `/NEBULA_2.0/pr-preview/pr-<number>/` and published to `gh-pages` too
+  ([rossjrw/pr-preview-action](https://github.com/rossjrw/pr-preview-action));
+  the action comments the link on the PR and removes the preview when the
+  PR closes. The preview goes up before the checks run.
+
+The path the site is served under comes from `SITE_PATH` (default
+`/NEBULA_2.0`), e.g. `make site SITE_PATH=/NEBULA_2.0/pr-preview/pr-1`.
+Repository settings: Pages deploys from the `gh-pages` branch (root);
+Actions have read and write permissions.
+
 ## License
 
 The code in this repository (everything outside `content/`) is licensed

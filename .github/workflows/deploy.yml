@@ -1,0 +1,44 @@
+# Builds all three variants on every push to main, runs the browser checks
+# and publishes _site/NEBULA_2.0/ to the gh-pages branch, which GitHub Pages
+# serves at https://olemussmann.github.io/NEBULA_2.0/.
+#
+# PR previews live in pr-preview/ on the same branch (preview.yml); this
+# workflow leaves that folder alone.
+
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # push to gh-pages
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v31
+
+      - name: Build all three variants
+        run: nix develop --command make site
+
+      - name: Browser checks
+        run: |
+          for v in quarto hugo starlight; do
+            nix develop .#verify --command make verify-$v
+          done
+
+      - name: Publish to gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: _site/NEBULA_2.0
+          branch: gh-pages
+          clean-exclude: pr-preview/
