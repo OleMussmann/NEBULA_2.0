@@ -1,0 +1,71 @@
+baseURL = "https://olemussmann.github.io/NEBULA_2.0/hugo/"
+title = "Research Software Support"
+locale = "en"
+# info.md -> info.html next to media/, so the content's relative image
+# paths (media/x.png) work unchanged, as in NEBULA.
+uglyURLs = true
+disableKinds = ["taxonomy", "term", "RSS", "sitemap"]
+
+[markup.goldmark.renderer]
+unsafe = true            # content and slides contain raw HTML
+
+[params]
+editBase = "https://github.com/OleMussmann/NEBULA_2.0/edit/main/content/"
+poc = "https://github.com/OleMussmann/NEBULA_2.0"
+
+# NEBULA content stays where it is (../content); mounts place it into Hugo's
+# component folders. Defining any mount disables the defaults, so the
+# project's own folders are mounted too.
+[module]
+[[module.mounts]]
+source = "content"
+target = "content"
+
+[[module.mounts]]
+# Lesson pages. Module index.md files are left out: in Hugo an index.md
+# makes the folder a leaf bundle and hides its other pages. The module
+# pages come from content/modules/_content.gotmpl instead.
+source = "../content/modules"
+target = "content/modules"
+# First matching pattern wins: exclusions must come before the include.
+files = ["! */index.md", "! */*.study.md", "*/*.md"]
+
+[[module.mounts]]
+source = "../content/main"
+target = "content/main"
+files = ["*.md"]
+
+[[module.mounts]]
+# Module index.md (read by the content adapter) and generated study views
+# (rendered by layouts/slides/single.html).
+source = "../content/modules"
+target = "assets/nebula/modules"
+files = ["*/index.md", "*/*.study.md"]
+
+[[module.mounts]]
+# Media and generated decks, published as-is.
+source = "../content/modules"
+target = "static/modules"
+files = ["*/media/**", "*/*.deck.html"]
+
+[[module.mounts]]
+source = "../content/main/media"
+target = "static/main/media"
+
+[[module.mounts]]
+source = "../content"
+target = "data/nebula"
+files = ["config.json"]
+
+[[module.mounts]]
+source = "../shared"
+target = "static/css"
+files = ["study.css"]
+
+[[module.mounts]]
+source = "layouts"
+target = "layouts"
+
+[[module.mounts]]
+source = "static"
+target = "static"

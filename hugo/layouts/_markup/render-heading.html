@@ -1,0 +1,8 @@
+{{/*
+  On study views, heading ids get a suffix: the slide's <section> already
+  carries the plain id (a slide titled "About copyright" is
+  #about-copyright), and duplicate ids break anchors.
+*/}}
+{{ $id := .Anchor }}
+{{ if eq .Page.Type "slides" }}{{ $id = printf "%s--h" .Anchor }}{{ end -}}
+<h{{ .Level }} id="{{ $id }}">{{ .Text }}</h{{ .Level }}>

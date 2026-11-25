@@ -1,0 +1,24 @@
+{{/*
+  NEBULA links are root-absolute and extension-less (/main/about,
+  /modules/<m>/<page>). Resolve them to this site's pages; links to modules
+  that are not in this site go to the module's current NEBULA site.
+*/}}
+{{ $url := .Destination }}
+{{ if or (hasPrefix $url "/modules/") (hasPrefix $url "/main/") }}
+  {{ $parts := split $url "#" }}
+  {{ $path := strings.TrimSuffix "/" (index $parts 0) }}
+  {{ $frag := "" }}
+  {{ if gt (len $parts) 1 }}{{ $frag = printf "#%s" (index $parts 1) }}{{ end }}
+  {{ with site.GetPage $path }}
+    {{ $url = printf "%s%s" .RelPermalink $frag }}
+  {{ else }}
+    {{ if hasPrefix $path "/modules/" }}
+      {{ $p := hugo.Data.nebula.config.publicProps }}
+      {{ $url = printf "%s%s%s" (lower (printf "https://%s.github.io/%s" $p.repoOwner $p.baseURL)) $path $frag }}
+    {{ else }}
+      {{ warnf "%s: unresolved site link %s" .Page.File.Path $url }}
+    {{ end }}
+  {{ end }}
+{{ end -}}
+<a href="{{ $url | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text }}</a>
+{{- /* trim */ -}}

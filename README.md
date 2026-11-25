@@ -32,7 +32,8 @@ a generator work; map frontmatter inside the variant instead.
 nix develop          # or open in a devcontainer / Codespace
 make study           # generate decks and study views next to each slides.md
 make quarto          # build the Quarto variant into quarto/_site
-nix develop .#verify --command make verify-quarto   # browser checks
+make hugo            # build the Hugo variant into hugo/public (+ Pagefind)
+nix develop .#verify --command make verify-quarto   # browser checks (or verify-hugo)
 make content REF=…   # re-import content from upstream (default: main)
 make clean
 ```

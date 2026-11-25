@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="{{ site.Language.Locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ if not .IsHome }}{{ .Title }} · {{ end }}{{ site.Title }}</title>
+  <link rel="stylesheet" href="{{ "css/site.css" | relURL }}">
+  <link rel="stylesheet" href="{{ "css/study.css" | relURL }}">
+  <link rel="stylesheet" href="{{ "pagefind/pagefind-ui.css" | relURL }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{{ "" | relURL }}">{{ site.Title }}</a>
+    <nav>
+      <a href="{{ "" | relURL }}">Lessons</a>
+      {{ with site.GetPage "/main" }}
+        {{ range sort .Pages "Params.order" }}
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        {{ end }}
+      {{ end }}
+      {{ with site.GetPage "/poc" }}<a href="{{ .RelPermalink }}">About this PoC</a>{{ end }}
+    </nav>
+    <div id="search" class="search"></div>
+  </header>
+
+  <main class="page" data-pagefind-body>
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  <footer class="site-footer">
+    <p>Lesson content © Netherlands eScience Center,
+      <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> (images: see credits);
+      source: <a href="https://github.com/esciencecenter-digital-skills/research-software-support">research-software-support</a>.</p>
+    <p>Hugo variant of the <a href="{{ site.Params.poc }}">NEBULA successor PoC</a>.</p>
+  </footer>
+
+  <script src="{{ "pagefind/pagefind-ui.js" | relURL }}"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      if (window.PagefindUI) new PagefindUI({ element: "#search", showSubResults: true, showImages: false });
+    });
+  </script>
+</body>
+</html>

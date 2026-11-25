@@ -118,9 +118,90 @@ Quarto's HTML pass treats overlapping sections.
 - Generated pages (hub) have no edit link; editing the hub means editing
   `prepare.py` or `config.json`.
 
-## Hugo
+## Hugo (0.170.0 extended)
 
-Not built yet (step 3).
+### Findings
+
+- **All acceptance checks pass** locally under the sub-path (32/32),
+  except the CI/Pages and web-editor PR preview items (step 5). No
+  duplicate ids.
+- **Custom code:** 211 lines of Go templates (`layouts/` 185 + content
+  adapter 26), `hugo.toml` 71 (mostly commented mounts), `site.css` 117,
+  `poc.md` 25. No pre-build script of its own: only the shared
+  `build_study.py` runs before Hugo (`make hugo` depends on `make study`).
+- **Toolchain:** one Hugo binary + Python 3 (decks) + Node only for
+  `npx pagefind` (search). No Go toolchain needed (no Hugo Modules
+  imports).
+- **Clean build:** ~2 s for `make clean && make hugo` (decks + Hugo +
+  Pagefind); Hugo itself takes ~20 ms for 24 pages.
+- **Content is mounted, not copied.** `hugo.toml` mounts `../content`
+  into `content/`, `assets/`, `static/` and `data/` with file filters;
+  mounts outside the project directory work.
+- **Frontmatter mapping:**
+  - NEBULA `type` is Hugo's reserved layout selector, which here is an
+    advantage: `type: exercise` uses `layouts/exercise/single.html`,
+    `type: slides` uses `layouts/slides/single.html`. No mapping needed.
+  - `order` read directly (`sort .Pages "Params.order"`); `category`,
+    `abstract`, `thumbnail`, `visibility` read as params in templates.
+  - Module `index.md` cannot be mounted as content (see below); a
+    *content adapter* (`content/modules/_content.gotmpl`) reads it from
+    `assets/` and creates the module section page, frontmatter → params.
+- **Study view:** `slides.md` renders its generated study view from
+  `assets/` via `.RenderString`, so the page keeps the source's path
+  (`/modules/<m>/slides.html`) and its edit link.
+- **Links:** a link render hook resolves NEBULA's root-absolute links
+  with `site.GetPage`; unknown modules go to the current NEBULA site.
+  NEBULA-style links therefore also work in new pages (the PoC page uses
+  `/modules/licenses/slides#about-copyright`).
+- **Edit this page:** no built-in; a 15-line partial using `.File.Path`
+  (relative to the mount, so it mirrors `content/`). The adapter-made
+  module pages carry their source path as a param.
+- **Search:** none built in; Pagefind (indexes `public/` after the build,
+  ~0.06 s) with its default UI.
+- **Theme:** Hugo ships none. The look is a hand-written `baseof.html` +
+  117 lines of CSS. A community theme would reduce the CSS but adds a
+  dependency whose templates we would have to override for `type`s.
+
+### What was awkward
+
+- **Leaf bundles.** A folder containing `index.md` is a leaf bundle in
+  Hugo: its other `.md` files become non-rendered resources. Every NEBULA
+  module has an `index.md`, and mounts cannot rename it to `_index.md`.
+  Solved with the content adapter (requires Hugo ≥ 0.126).
+- **Mount filters:** the first matching pattern wins, so exclusions must
+  precede the include (`["! */index.md", "*/*.md"]`); the other order
+  silently includes everything. Not stated in the docs.
+- **API churn:** `includeFiles`/`excludeFiles` (removed in 0.153),
+  `site.Data` (deprecated 0.156), `languageCode` and
+  `.Language.LanguageCode` (deprecated 0.158) all had to be updated for
+  the current release; most examples online use the old forms.
+- `uglyURLs = true` is needed so `info.md` becomes `info.html` next to
+  `media/` and the content's relative image paths work; section pages
+  still become `<module>/index.html`.
+- Goldmark's automatic heading ids collide with slide ids in the study
+  view; fixed with a heading render hook that suffixes ids on `slides`
+  pages.
+
+### How a non-coder adds an exercise
+
+Same as Quarto: add `content/modules/<module>/<name>.md` with `title`,
+`type: exercise`, `order` in the GitHub web editor and open a PR. The
+mount picks it up; no Hugo-specific step.
+
+### Upgrade risk
+
+Templates use only public Hugo template functions, but Hugo changes those
+often (four deprecations hit this PoC on its current release). The content
+adapter and mount `files` syntax are recent (0.126, 0.153). Pin the Hugo
+version in CI and expect small template/config edits on upgrades.
+
+### Open issues
+
+- The navigation wraps to two lines at 1280 px; cosmetic.
+- No table of contents or previous/next navigation inside a module (not
+  required; would be more template code).
+- Several content repos: one mount set per repo; edit links would need the
+  repo per page (a param from the mount is not available; untested).
 
 ## Astro Starlight
 

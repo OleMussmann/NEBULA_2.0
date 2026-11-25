@@ -1,0 +1,15 @@
+{{/*
+  Link to the page's source in content/ on GitHub's web editor.
+  Mounted files: .File.Path is relative to the mount target, which mirrors
+  content/. Adapter pages (module index) carry params.nebula_source.
+  Pages of this Hugo project itself set `noedit: true`.
+*/}}
+{{ $src := "" }}
+{{ with .Params.nebula_source }}
+  {{ $src = . }}
+{{ else }}
+  {{ with .File }}{{ $src = .Path }}{{ end }}
+{{ end }}
+{{ if and $src (not .Params.noedit) }}
+  <a class="edit-link" href="{{ site.Params.editBase }}{{ $src }}">Edit this page</a>
+{{ end }}

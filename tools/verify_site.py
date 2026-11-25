@@ -43,6 +43,12 @@ def quarto_search(page: Page, term: str) -> int:
     return page.locator(".aa-Item").count()
 
 
+def pagefind_search(page: Page, term: str) -> int:
+    page.locator(".pagefind-ui__search-input").fill(term)
+    page.locator(".pagefind-ui__result").first.wait_for(timeout=10_000)
+    return page.locator(".pagefind-ui__result").count()
+
+
 VARIANTS = {
     "quarto": dict(
         module="modules/{m}/",                 # module page
@@ -50,6 +56,13 @@ VARIANTS = {
         main="main/{stem}.html",
         example_link_page="poc.html",
         search=quarto_search,
+    ),
+    "hugo": dict(
+        module="modules/{m}/",
+        page="modules/{m}/{stem}.html",
+        main="main/{stem}.html",
+        example_link_page="poc.html",
+        search=pagefind_search,
     ),
 }
 

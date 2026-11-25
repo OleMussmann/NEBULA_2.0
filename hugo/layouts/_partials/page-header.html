@@ -1,0 +1,10 @@
+{{/* Title, type badge and "Edit this page" for any page. */}}
+<header class="page-header">
+  <h1>{{ .Title }}</h1>
+  <div class="page-meta">
+    {{ if in (slice "info" "reading" "exercise" "slides") .Type }}
+      <span class="badge badge-{{ .Type }}">{{ .Type }}</span>
+    {{ end }}
+    {{ partial "edit-link.html" . }}
+  </div>
+</header>

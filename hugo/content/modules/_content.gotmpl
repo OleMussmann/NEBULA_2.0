@@ -1,0 +1,26 @@
+{{/*
+  Content adapter: one section page per NEBULA module, from its index.md.
+
+  Hugo would treat modules/<m>/index.md as a leaf bundle and hide the
+  module's other pages, so index.md is not mounted as content. It is
+  mounted under assets/nebula/ and turned into the section page here:
+  frontmatter becomes params, the body becomes the page content.
+*/}}
+{{ range resources.Match "nebula/modules/*/index.md" }}
+  {{ $slug := path.Base (path.Dir .Name) }}
+  {{ $m := findRESubmatch `(?s)\A---\s*\n(.*?)\n---\s*\n(.*)\z` .Content 1 }}
+  {{ with $m }}
+    {{ $meta := transform.Unmarshal (dict "format" "yaml") (index . 0 1) }}
+    {{ $params := merge $meta (dict
+      "module" $slug
+      "nebula_source" (printf "modules/%s/index.md" $slug)
+    ) }}
+    {{ $.AddPage (dict
+      "path" $slug
+      "kind" "section"
+      "title" $meta.title
+      "params" $params
+      "content" (dict "mediaType" "text/markdown" "value" (index . 0 2))
+    ) }}
+  {{ end }}
+{{ end }}
